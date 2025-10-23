@@ -1,0 +1,29 @@
+@startuml
+skinparam classAttributeIconSize 0
+
+class Block {
+  #balance: float
+  #hash: int
+}
+
+class GenesisBlock {
+  -ownerName: String
+  -creationTime: Time
+}
+
+Block <|-- GenesisBlock
+
+
+class Client {
+  -deposit()
+  -withdraw()
+}
+
+class Server {
+  -deposit()
+  -withdraw()
+}
+
+Server *--> "many" Block
+Server -- Client
+@enduml
