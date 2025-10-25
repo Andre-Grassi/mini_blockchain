@@ -1,9 +1,9 @@
-@startuml
+@startuml blockchain_classes
 skinparam classAttributeIconSize 0
 
 class Block {
   #balance: float
-  #hash: int
+  #hash: String
 }
 
 class GenesisBlock {
@@ -15,15 +15,23 @@ Block <|-- GenesisBlock
 
 
 class Client {
-  -deposit()
-  -withdraw()
+  -name: String
+  -balance: float
+  -deposit(amount: float)
+  -withdraw(amount: float)
 }
 
 class Server {
-  -deposit()
-  -withdraw()
+  -deposit(amount: float)
+  -withdraw(amount: float)
+  -calculateHash(block: Block): String
+' A validação só é feita pelo servidor
+  -validateWithdrawal(amount: float, ownerName: float)
 }
 
+' BlockChain
 Server *--> "many" Block
-Server -- Client
+
+' O Server tem um atributo que mapeia por string os clientes map(String) = Cliente
+Server "1"--"many" Client 
 @enduml
