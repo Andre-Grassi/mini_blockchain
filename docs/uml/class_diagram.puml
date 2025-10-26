@@ -1,14 +1,14 @@
-@startuml blockchain_classes
+@startuml class_diagram 
 skinparam classAttributeIconSize 0
 
 class Block {
-  #balance: float
-  #hash: String
+  #balance: float {readonly}
+  #hash: String {readonly}
 }
 
 class GenesisBlock {
-  -ownerName: String
-  -creationTime: Time
+  -ownerName: String {readonly}
+  -creationTime: Time {readonly}
 }
 
 Block <|-- GenesisBlock
@@ -16,13 +16,13 @@ Block <|-- GenesisBlock
 
 abstract class NetworkNode
 {
-  -socket: Socket
-  -ip: String
-  -port: String
+  -socket: Socket {readonly}
+  -ip: String {readonly}
+  -port: String {readonly}
 }
 
 class Client {
-  -name: String
+  -name: String {readonly}
   -balance: float
   -deposit(amount: float)
   -withdraw(amount: float)
