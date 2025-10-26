@@ -14,6 +14,13 @@ class GenesisBlock {
 Block <|-- GenesisBlock
 
 
+abstract class NetworkNode
+{
+  -socket: Socket
+  -ip: String
+  -port: String
+}
+
 class Client {
   -name: String
   -balance: float
@@ -28,6 +35,9 @@ class Server {
 ' A validação só é feita pelo servidor
   -validateWithdrawal(amount: float, ownerName: float)
 }
+
+NetworkNode <|-- Client
+NetworkNode <|-- Server
 
 ' BlockChain
 Server *--> "many" Block
