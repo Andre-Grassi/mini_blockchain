@@ -1,5 +1,7 @@
 @startuml class_diagram 
 skinparam classAttributeIconSize 0
+hide circle
+skinparam Shadowing false
 
 class Block {
   #balance: float {readonly}
@@ -14,7 +16,7 @@ class GenesisBlock {
 Block <|-- GenesisBlock
 
 
-abstract class NetworkNode
+abstract class NetworkNode <<abstract>>
 {
   -socket: Socket {readonly}
   -ip: String {readonly}
