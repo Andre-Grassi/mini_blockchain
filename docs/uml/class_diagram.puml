@@ -19,8 +19,10 @@ Block <|-- GenesisBlock
 abstract class NetworkNode <<abstract>>
 {
   -socket: Socket {readonly}
+  -bufferSize: unsigned int {readonly}
   -ip: String {readonly}
   -port: String {readonly}
+  -getOwnIP(): String
 }
 
 class Client {
@@ -31,11 +33,14 @@ class Client {
 }
 
 class Server {
+  ' A segunda string é o nome do cliente
+  -clients: map(String, String) {readonly}
   -deposit(amount: float)
   -withdraw(amount: float)
   -calculateHash(block: Block): String
 ' A validação só é feita pelo servidor
   -validateWithdrawal(amount: float, ownerName: float)
+  -getBalance(clientName: String): float
 }
 
 NetworkNode <|-- Client
@@ -44,6 +49,6 @@ NetworkNode <|-- Server
 ' BlockChain
 Server *--> "many" Block
 
-' O Server tem um atributo que mapeia por string os clientes map(String) = Cliente
+' O Server tem um atributo que mapeia por string os clientes map(String) = NomeCliente
 Server "1"--"many" Client 
 @enduml
