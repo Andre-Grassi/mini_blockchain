@@ -2,8 +2,9 @@
 title Client
 start
 partition Constructor {
-    :Super();
     :Set name;
+    :Set Buffer Size;
+    :Create Socket;
     :Set balance to 0;
 }
 partition RunClient {

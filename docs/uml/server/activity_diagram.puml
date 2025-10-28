@@ -2,9 +2,10 @@
 title Server
 start
 partition Constructor {
-    :Super();
     :Set TCP IP;
     :Set TCP Port;
+    :Set Buffer Size;
+    :Create Socket;
 }
 partition RunServer {
     :Bind;
