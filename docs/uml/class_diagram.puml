@@ -16,16 +16,9 @@ class GenesisBlock {
 Block <|-- GenesisBlock
 
 
-abstract class NetworkNode <<abstract>>
-{
+class Client {
   -socket: Socket {readonly}
   -bufferSize: unsigned int {readonly}
-  -ip: String {readonly}
-  -port: String {readonly}
-  -getOwnIP(): String
-}
-
-class Client {
   -name: String {readonly}
   -balance: float
   -deposit(amount: float)
@@ -34,7 +27,12 @@ class Client {
 
 class Server {
   ' A segunda string é o nome do cliente
+  -socket: Socket {readonly}
+  -bufferSize: unsigned int {readonly}
+  -ip: String {readonly}
+  -port: int {readonly}
   -clients: map(String, String) {readonly}
+  -getOwnIP(): String
   -deposit(amount: float)
   -withdraw(amount: float)
   -calculateHash(block: Block): String
@@ -42,9 +40,6 @@ class Server {
   -validateWithdrawal(amount: float, ownerName: float)
   -getBalance(clientName: String): float
 }
-
-NetworkNode <|-- Client
-NetworkNode <|-- Server
 
 ' BlockChain
 Server *--> "many" Block

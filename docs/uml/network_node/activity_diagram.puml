@@ -1,9 +1,0 @@
-@startuml Activity Diagram
-title NetworkNode
-start
-partition Constructor {
-    :Create Socket; 
-    :Set Buffer Size
-}
-end
-@enduml
