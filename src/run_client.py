@@ -9,11 +9,27 @@ def main(client_name: str, server_ip: str, server_port: int):
     client.connect_to(server_ip, server_port)
 
     while True:
-        message = input("Message: ")
+        print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
+        message = input("Type action and amount:\n")
 
-        # Stop sending messages
-        if message.strip().lower() in ("quit", "exit", "q"):
+        (action, amount) = client.parse_message(message)
+
+        if action is None:
+            print("Invalid action.")
+
+        elif action == "q":
+            # Stop sending messages
             break
+        
+        elif action == "deposit":
+            if amount <= 0:
+                print("Amount cant be < 0")
+            print("Depositing")
+
+        elif action == "withdraw":
+            if amount <= 0:
+                print("Amount cant be < 0")
+            print("Withdraw")
 
         message_bytes = message.encode()
         client.socket.sendall(message_bytes)
