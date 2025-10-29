@@ -18,14 +18,17 @@ def main(server_port: int):
 
     # Keep the connection alive, exchanging messages, until it's closed
     while True:
-        data = connection.recv(server.buffer_size)
+        message_bytes = connection.recv(server.buffer_size)
 
-        if not data:
+        if not message_bytes:
             break  # Connection was closed
 
-        print(f"received data: {data}")
+        message = message_bytes.decode()
+
+        print(f"received data: {message}")
 
     connection.close()
+    server.close()
 
 
 if __name__ == "__main__":

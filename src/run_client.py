@@ -10,7 +10,15 @@ def main(client_name: str, server_ip: str, server_port: int):
 
     while True:
         message = input("Message: ")
-        client.socket.send(message)
+
+        # Stop sending messages
+        if message.strip().lower() in ("quit", "exit", "q"):
+            break
+
+        message_bytes = message.encode()
+        client.socket.sendall(message_bytes)
+
+    client.close()
 
 
 if __name__ == "__main__":
