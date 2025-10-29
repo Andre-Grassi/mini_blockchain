@@ -13,5 +13,8 @@ class Client:
     def connect_to(self, server_ip: str, server_port: int):
         self.socket.connect((server_ip, server_port))
 
+    def close(self):
+        self.socket.close()
+
     def deposit(self, amount: float):
         return

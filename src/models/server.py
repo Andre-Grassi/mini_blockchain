@@ -14,6 +14,9 @@ class Server:
     def bind_socket(self):
         self.socket.bind((self.ip, self.port))
 
+    def close(self):
+        self.socket.close()
+
     def _get_own_ip(self):
         aux_socket = None
         try:
