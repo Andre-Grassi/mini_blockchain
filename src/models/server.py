@@ -1,21 +1,19 @@
 import socket
+from network_node import NetworkNode
 
 BUFFER_SIZE = 1024
 
 
-class Server:
+class Server(NetworkNode):
     def __init__(self, port: int):
+        super().__init__()
+        
         self.ip = self._get_own_ip()
         self.port = port
         self.buffer_size = BUFFER_SIZE
 
-        self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-
     def bind_socket(self):
         self.socket.bind((self.ip, self.port))
-
-    def close(self):
-        self.socket.close()
 
     def _get_own_ip(self):
         aux_socket = None
