@@ -16,11 +16,12 @@ def main(client_name: str, server_ip: str, server_port: int):
 
         if action is None:
             print("Invalid action.")
+            continue
 
         elif action == "q":
             # Stop sending messages
             break
-        
+
         elif action == "deposit":
             if amount <= 0:
                 print("Amount cant be < 0")
