@@ -10,6 +10,12 @@ class NetworkNode:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer_size = buffer_size
 
+    def send_str(self, message: str):
+        self.socket.sendall(message.encode("utf-8"))
+
+    def send_bytes(self, message: bytes):
+        self.socket.sendall(message)
+
     def close(self):
         self.socket.close()
 
