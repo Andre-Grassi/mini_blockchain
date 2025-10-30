@@ -1,3 +1,4 @@
+import json
 from typing import Optional
 from operation import Operation
 
@@ -8,7 +9,7 @@ class Block:
         owner_name: str,
         amount: float,
         operation: Operation,
-        hash_s: str,
+        hash_b: bytes,
     ):
         if amount <= 0:
             raise ValueError("amount must be positive.")
@@ -19,15 +20,19 @@ class Block:
         self.owner_name = owner_name
         self.amount = amount
         self.operation = operation
-        self.hash = hash_s
+        self.hash_b = hash_b
+
+    def serialize(self) -> bytes:
+        json_s = json.dumps(self.to_dict, sort_keys=True)
+        return json_s.encode("utf-8")
 
     def to_dict(self) -> dict:
         return {
             "owner_name": self.owner_name,
             "amount": self.amount,
             "operation": self.operation,
-            "hash": self.hash,
+            "hash": self.hash_b,
         }
 
     def __repr__(self):
-        return f"Block {self.owner_name} {self.operation} {self.amount}\n"
+        return f"Block {self.owner_name} {self.operation} {self.amount}\n{self.hash_b.hex()}"
