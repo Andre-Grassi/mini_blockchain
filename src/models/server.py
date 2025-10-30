@@ -1,10 +1,12 @@
 import socket
 import json
 import hashlib
-from typing import Optional
+import datetime
+from typing import Optional, List
 from network_node import NetworkNode
 from block import Block
 from models.acc_creation_block import AccCreationBlock
+from operation import Operation
 
 
 class Server(NetworkNode):
@@ -13,30 +15,43 @@ class Server(NetworkNode):
 
         self.ip = self._get_own_ip()
         self.port = port
-        self.block_chain = []
+        self.block_chain: List[Block] = []
+        self.client_ids: List[str] = []
 
     def bind_socket(self):
         self.socket.bind((self.ip, self.port))
 
-    def compute_hash(self, block: Block, last_hash: bytes) -> bytes:
+    def compute_hash(self, block: Block) -> bytes:
         payload = block.serialize()
 
         hash_obj = hashlib.sha256()
-        hash_obj.update(last_hash)
+
+        # If it's not the genesis, use last hash
+        if self.block_chain.count() > 0:
+            last_hash = self.block_chain[-1].hash_b
+            hash_obj.update(last_hash)
+
         hash_obj.update(payload)
 
         return hash_obj.digest()
 
-    def compute_genesis_hash(self, block: Block):
-        if self.block_chain.count > 0 and block != self.block_chain[0]:
-            raise RuntimeError(
-                "Cannot compute hash of a block without last hash, since genesis has already been calculated"
-            )
+    def client_deposit(self, client_name: str, amount: float):
+        if amount <= 0:
+            raise ValueError("Can't deposit <= 0 minicoins.")
+        if client_name is None:
+            raise ValueError("Client has no name")
 
-        payload = block.serialize()
+        # New client
+        if not (client_name in self.client_ids):
+            self.client_ids.append(client_name)
+            creation_time = datetime.datetime.now(datetime.timezone.utc)
+            new_block = AccCreationBlock(client_name, amount, creation_time)
+        else:
+            new_block = Block(client_name, amount, Operation.DEPOSIT)
 
-        hash_obj = hashlib.sha256(payload)
-        return hash_obj.digest()
+        new_block.hash_b = self.compute_hash(new_block)
+
+        self.block_chain.append(new_block)
 
     def _get_own_ip(self) -> str:
         aux_socket = None
