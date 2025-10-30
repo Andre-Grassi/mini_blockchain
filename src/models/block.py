@@ -9,7 +9,6 @@ class Block:
         owner_name: str,
         amount: float,
         operation: Operation,
-        hash_b: bytes,
     ):
         if amount <= 0:
             raise ValueError("amount must be positive.")
@@ -20,7 +19,7 @@ class Block:
         self.owner_name = owner_name
         self.amount = amount
         self.operation = operation
-        self.hash_b = hash_b
+        self.hash_b: bytes = None
 
     def serialize(self) -> bytes:
         json_s = json.dumps(self.to_dict, sort_keys=True)
@@ -31,8 +30,12 @@ class Block:
             "owner_name": self.owner_name,
             "amount": self.amount,
             "operation": self.operation,
-            "hash": self.hash_b,
         }
 
     def __repr__(self):
-        return f"Block {self.owner_name} {self.operation} {self.amount}\n{self.hash_b.hex()}"
+        if self.hash_b is not None:
+            hash_hex = "None"
+        else:
+            hash_hex = self.hash_b.hex()
+        
+        return f"Block {self.owner_name} {self.operation} {self.amount}\n{hash_hex}"
