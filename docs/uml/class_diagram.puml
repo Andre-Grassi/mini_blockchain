@@ -6,40 +6,53 @@ skinparam Shadowing false
 class Block {
   #balance: float {readonly}
   #hash: String {readonly}
+  #operation: Operation {readonly}
+  #ownerName: String {readonly}
+
+  +to_dict(): dict
 }
 
-class GenesisBlock {
+class AccCreationBlock {
   -ownerName: String {readonly}
   -creationTime: Time {readonly}
 }
 
-Block <|-- GenesisBlock
+Block <|-- AccCreationBlock
 
+
+class NetworkNode {
+  #socket: Socket {readonly}
+  #bufferSize: unsigned int {readonly}
+  +close: void
+  +parse_message(message: String): (String, float)
+}
 
 class Client {
-  -socket: Socket {readonly}
-  -bufferSize: unsigned int {readonly}
   -name: String {readonly}
   -balance: float
-  -deposit(amount: float)
-  -withdraw(amount: float)
+  +connectTo(serverIp: String, serverPort: int): void
+  +deposit(amount: float)
+  +withdraw(amount: float)
 }
 
 class Server {
-  ' A segunda string é o nome do cliente
-  -socket: Socket {readonly}
-  -bufferSize: unsigned int {readonly}
   -ip: String {readonly}
   -port: int {readonly}
+  ' A segunda string é o nome do cliente
   -clients: map(String, String) {readonly}
-  -getOwnIP(): String
-  -deposit(amount: float)
-  -withdraw(amount: float)
-  -calculateHash(block: Block): String
+  +deposit(amount: float)
+  +withdraw(amount: float)
+  +computeHash(block: Block, lastHash: String): String
+  +computeGenesisHash(block: Block): String
 ' A validação só é feita pelo servidor
+  +bind_socket(): void
+  -getOwnIP(): String
   -validateWithdrawal(amount: float, ownerName: float)
   -getBalance(clientName: String): float
 }
+
+NetworkNode <|-- Client
+NetworkNode <|-- Server
 
 ' BlockChain
 Server *--> "many" Block
