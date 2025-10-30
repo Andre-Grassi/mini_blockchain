@@ -1,4 +1,6 @@
 import socket
+import json
+import hashlib
 from typing import Optional
 from network_node import NetworkNode
 from block import Block
@@ -16,14 +18,25 @@ class Server(NetworkNode):
     def bind_socket(self):
         self.socket.bind((self.ip, self.port))
 
-    def compute_hash(self, block: Block, last_hash: str) -> str:
-        return "hash placeholder"
+    def compute_hash(self, block: Block, last_hash: bytes) -> bytes:
+        payload = block.serialize()
+
+        hash_obj = hashlib.sha256()
+        hash_obj.update(last_hash)
+        hash_obj.update(payload)
+
+        return hash_obj.digest()
 
     def compute_genesis_hash(self, block: Block):
         if self.block_chain.count > 0 and block != self.block_chain[0]:
             raise RuntimeError(
                 "Cannot compute hash of a block without last hash, since genesis has already been calculated"
             )
+
+        payload = block.serialize()
+
+        hash_obj = hashlib.sha256(payload)
+        return hash_obj.digest()
 
     def _get_own_ip(self) -> str:
         aux_socket = None
