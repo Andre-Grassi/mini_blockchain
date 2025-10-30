@@ -8,7 +8,7 @@ class Block:
         owner_name: str,
         amount: float,
         operation: Operation,
-        last_hash: Optional[str] = None,
+        hash_s: str,
     ):
         if amount <= 0:
             raise ValueError("amount must be positive.")
@@ -16,14 +16,18 @@ class Block:
         if owner_name is None:
             raise ValueError("owner_name can't be None")
 
+        self.owner_name = owner_name
         self.amount = amount
         self.operation = operation
-        self.hash = self.compute_hash(last_hash)
+        self.hash = hash_s
 
-    def compute_hash(self, last_hash: Optional[str] = None) -> str:
-        if last_hash is None:
-            print("Computing hash of the first block")
-        else:
-            print("Computing hash")
+    def to_dict(self) -> dict:
+        return {
+            "owner_name": self.owner_name,
+            "amount": self.amount,
+            "operation": self.operation,
+            "hash": self.hash,
+        }
 
-        return "hash placeholder"
+    def __repr__(self):
+        return f"Block {self.owner_name} {self.operation} {self.amount}\n"
