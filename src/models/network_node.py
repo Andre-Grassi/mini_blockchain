@@ -1,11 +1,13 @@
 import socket
+from typing import Optional
 
 BUFFER_SIZE = 1024
 
 
 class NetworkNode:
-    def __init__(self):
+    def __init__(self, buffer_size: Optional[int] = BUFFER_SIZE):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+        self.buffer_size = buffer_size
 
     def close(self):
         self.socket.close()
