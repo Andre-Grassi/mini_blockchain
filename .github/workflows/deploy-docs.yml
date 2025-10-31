@@ -2,7 +2,7 @@ name: Deploy Sphinx Documentation to GitHub Pages
 
 on:
   push:
-    branches: [main, docs] # Trigger on pushes to main or docs branch
+    branches: [main, docs, deploy-docs] # Trigger on pushes to main or docs branch
   pull_request:
     branches: [main]
 
@@ -36,7 +36,7 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel
           python -m pip install sphinx
 
-          pip install -e src/models
+          pip install -e .
 
       - name: Setup Pages
         uses: actions/configure-pages@v4
