@@ -10,6 +10,8 @@ Welcome to Mini Blockchain's documentation!
    :maxdepth: 2
    :caption: Contents:
 
+   models/modules
+
 
 
 Indices and tables
