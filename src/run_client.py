@@ -2,38 +2,24 @@
 
 import argparse
 from models.client import Client
+from models.operation import Operation
 
 
 def main(client_name: str, server_ip: str, server_port: int):
     client = Client(client_name)
     client.connect_to(server_ip, server_port)
 
-    while True:
+    is_open = True
+    while is_open:
         print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
         message = input("Type action and amount:\n")
 
         (action, amount) = client.parse_message(message)
+        client.send_str(message)
 
-        if action is None:
-            print("Invalid action.")
-            continue
-
-        elif action == "q":
-            # Stop sending messages
-            break
-
-        elif action == "deposit":
-            if amount <= 0:
-                print("Amount cant be < 0")
-            print("Depositing")
-
-        elif action == "withdraw":
-            if amount <= 0:
-                print("Amount cant be < 0")
-            print("Withdraw")
-
-        message_bytes = message.encode()
-        client.socket.sendall(message_bytes)
+        if action is not None and action == Operation.QUIT.value:
+            print("Quitting.")
+            is_open = False
 
     client.close()
 
