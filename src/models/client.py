@@ -1,6 +1,6 @@
 import socket
-from network_node import NetworkNode
-from operation import Operation
+from models.network_node import NetworkNode
+from models.operation import Operation
 
 class Client(NetworkNode):
     def __init__(self, name: str):

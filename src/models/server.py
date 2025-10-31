@@ -3,10 +3,10 @@ import json
 import hashlib
 import datetime
 from typing import Optional, List
-from network_node import NetworkNode
-from block import Block
+from models.network_node import NetworkNode
+from models.block import Block
 from models.acc_creation_block import AccCreationBlock
-from operation import Operation
+from models.operation import Operation
 
 
 class Server(NetworkNode):

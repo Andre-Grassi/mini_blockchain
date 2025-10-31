@@ -1,7 +1,7 @@
 from typing import Optional
 from datetime import datetime
-from operation import Operation
-from block import Block
+from models.operation import Operation
+from models.block import Block
 
 
 class AccCreationBlock(Block):
