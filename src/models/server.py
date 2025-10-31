@@ -10,6 +10,19 @@ from models.operation import Operation
 
 
 class Server(NetworkNode):
+    """The server of the blockchain.
+
+    Stores all information about the blockchain and is used by clients to
+    deposit or withdraw minicoins.
+
+    Attributes:
+        ip (str): IP address of the server
+        port (int): Port that the server is running
+        block_chain (List[Block]): List of the blocks that constitutes the
+        blockchain
+        client_ids (List[str]): List of names of clients that sent messages
+    """
+
     def __init__(self, port: int):
         super().__init__()
 
@@ -22,6 +35,7 @@ class Server(NetworkNode):
         self.socket.bind((self.ip, self.port))
 
     def compute_hash(self, block: Block) -> bytes:
+        """Calculates the hash for the block using SHA256"""
         payload = block.serialize()
 
         hash_obj = hashlib.sha256()
@@ -36,6 +50,16 @@ class Server(NetworkNode):
         return hash_obj.digest()
 
     def client_deposit(self, client_name: str, amount: float):
+        """Processes the deposit of a client.
+
+        Stores the deposit of the client in a new block in the blockchain.
+
+        Args:
+            client_name (str): The identification of the client, can't be empty.
+            amount (float): How many minicoins are being deposited, must be
+            greater than 0.
+
+        """
         if amount <= 0:
             raise ValueError("Can't deposit <= 0 minicoins.")
         if client_name is None:
