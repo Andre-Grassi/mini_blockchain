@@ -1,6 +1,6 @@
 import json
 from typing import Optional
-from operation import Operation
+from models.operation import Operation
 
 
 class Block:
@@ -22,7 +22,8 @@ class Block:
         self.hash_b: bytes = None
 
     def serialize(self) -> bytes:
-        json_s = json.dumps(self.to_dict, sort_keys=True)
+        # BUG here
+        json_s = json.dumps(self.to_dict(), sort_keys=True)
         return json_s.encode("utf-8")
 
     def to_dict(self) -> dict:
@@ -37,5 +38,5 @@ class Block:
             hash_hex = "None"
         else:
             hash_hex = self.hash_b.hex()
-        
+
         return f"Block {self.owner_name} {self.operation} {self.amount}\n{hash_hex}"
