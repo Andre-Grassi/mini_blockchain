@@ -1,6 +1,6 @@
 import socket
 from typing import Optional
-from operation import Operation
+from models.operation import Operation
 
 BUFFER_SIZE = 1024
 
@@ -29,11 +29,16 @@ class NetworkNode:
         action = parts[0].lower()
 
         # Check if the action is recognizable
-        if action not in ("deposit", "withdraw", "q"):
+        # UGLY hardcoded actions strings
+        if action not in ("deposit", "withdraw", "name", "q"):
             return None
 
-        if action == "q":
+        if action == Operation.QUIT.value:
             return (Operation.QUIT, 0)
+
+        elif action == Operation.NAME.value:
+            name = parts[1]
+            return (Operation.NAME, name)
 
         amount_s = parts[1]
 
