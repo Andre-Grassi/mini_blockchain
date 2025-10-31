@@ -1,5 +1,5 @@
 #
-# Autores: Andre Grassi de Jesus, Ricardo Faria
+# Authors: Andre Grassi de Jesus, Ricardo Faria
 #
 
 from typing import Optional

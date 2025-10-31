@@ -1,6 +1,7 @@
 #
-# Autores: Andre Grassi de Jesus, Ricardo Faria
+# Authors: Andre Grassi de Jesus, Ricardo Faria
 #
+
 
 import socket
 from typing import Optional

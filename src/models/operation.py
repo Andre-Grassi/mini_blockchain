@@ -1,3 +1,7 @@
+#
+# Authors: Andre Grassi de Jesus, Ricardo Faria
+#
+
 from enum import Enum
 
 
