@@ -6,23 +6,29 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
-project = 'Mini Blockchain'
-copyright = '2025, Andre Grassi, Ricardo Faria'
-author = 'Andre Grassi, Ricardo Faria'
-release = '0.1'
+# ...existing code...
+import os
+import sys
+
+sys.path.insert(0, os.path.abspath("../src/models"))
+
+project = "Mini Blockchain"
+copyright = "2025, Andre Grassi, Ricardo Faria"
+author = "Andre Grassi, Ricardo Faria"
+release = "0.1"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
 
-extensions = []
+extensions = ["sphinx.ext.autodoc", "sphinx.ext.napoleon", "sphinx.ext.viewcode"]
 
-templates_path = ['_templates']
+templates_path = ["_templates"]
 exclude_patterns = []
 
-language = 'pt_BR'
+language = "pt_BR"
 
 # -- Options for HTML output -------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#options-for-html-output
 
-html_theme = 'alabaster'
-html_static_path = ['_static']
+html_theme = "alabaster"
+html_static_path = ["_static"]
