@@ -36,6 +36,10 @@ jobs:
 
       - name: Generate documentation
         run: |
+          sphinx-apidoc -o docs/models src/model
+
+      - name: Build documentation
+        run: |
           make html
 
       - name: Upload artifact
