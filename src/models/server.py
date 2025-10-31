@@ -1,3 +1,8 @@
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
+
 import socket
 import json
 import hashlib

@@ -1,3 +1,7 @@
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
 import json
 from typing import Optional
 from models.operation import Operation

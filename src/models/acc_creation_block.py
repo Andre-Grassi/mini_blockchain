@@ -1,3 +1,7 @@
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
 from typing import Optional
 from datetime import datetime
 from models.operation import Operation

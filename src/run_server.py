@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
 import argparse
 from models.server import Server
 from models.operation import Operation

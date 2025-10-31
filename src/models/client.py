@@ -1,3 +1,7 @@
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
 import socket
 from models.network_node import NetworkNode
 from models.operation import Operation

@@ -1,5 +1,9 @@
 #!/usr/bin/python3
 
+#
+# Autores: Andre Grassi de Jesus, Ricardo Faria
+#
+
 import argparse
 from models.client import Client
 from models.operation import Operation
@@ -14,7 +18,7 @@ def main(client_name: str, server_ip: str, server_port: int):
         print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
         message = input("Type action and amount:\n")
 
-        (action, amount) = client.parse_message(message)
+        (action, _) = client.parse_message(message)
         client.send_str(message)
 
         if action is not None and action == Operation.QUIT.value:
