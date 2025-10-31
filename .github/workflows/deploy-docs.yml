@@ -1,4 +1,4 @@
-name: Deploy Doxygen Documentation to GitHub Pages
+name: Deploy Sphinx Documentation to GitHub Pages
 
 on:
   push:
