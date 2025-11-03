@@ -32,13 +32,13 @@ def answer_client(server: Server, connection: socket, lock: threading.Lock):
         (operation, op_data) = server.parse_message(message)
 
         if operation is None:
-            server.send_str("Unknow operation.")
+            server.send_str(connection, "Unknow operation.")
         elif operation == Operation.QUIT:
             is_open = False
         elif operation == Operation.NAME:
             client_name = op_data
         elif client_name is None:
-            server.send_str("First, send your name: name <your_name>")
+            server.send_str(connection, "First, send your name: name <your_name>")
 
         # Money operations
         elif op_data <= 0:

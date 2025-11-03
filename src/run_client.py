@@ -12,21 +12,33 @@ from models.operation import Operation
 def main(client_name: str, server_ip: str, server_port: int):
     client = Client(client_name)
     client.connect_to(server_ip, server_port)
+    connection = client.socket
 
     # Send name to server
-    client.send_str("name " + client_name)
+    client.send_str(connection, "name " + client_name)
 
     is_open = True
     while is_open:
+        # Send command
         print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
         message = input("Type action and amount:\n")
 
         (action, _) = client.parse_message(message)
-        client.send_str(message)
+        client.send_str(connection, message)
 
         if action is not None and action == Operation.QUIT.value:
             print("Quitting.")
             is_open = False
+
+        # Listen server response
+        message_bytes = connection.recv(client.buffer_size)
+
+        if not message_bytes:
+            break  # Connection was closed
+
+        message = message_bytes.decode()
+
+        print(f"received data: {message}")
 
     client.close()
 
