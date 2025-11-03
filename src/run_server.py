@@ -5,22 +5,14 @@
 #
 
 import argparse
+import threading
+from socket import socket
 from models.server import Server
 from models.operation import Operation
 
 
-def main(server_port: int):
-    server = Server(server_port)
-
-    print(f"Server IP: {server.ip}")
-
-    server.bind_socket()
-
-    server.socket.listen(1)
-
-    # TODO: usar threading aqui para conseguir aceitar múltiplas conexões ao mesmo tempo
-    connection, client_address = server.socket.accept()
-
+# Executed in an new thread
+def answer_client(server: Server, connection: socket):
     # Keep the connection alive, exchanging messages, until it's closed
     is_open = True
     client_name = None
@@ -58,6 +50,27 @@ def main(server_port: int):
             raise RuntimeError("Unknown error")
 
     connection.close()
+
+
+def main(server_port: int):
+    server = Server(server_port)
+
+    print(f"Server IP: {server.ip}")
+
+    server.bind_socket()
+
+    print("listening")
+    server.socket.listen(1)
+    print("accepting")
+
+    # Accepting connections
+    while True:
+        connection, client_address = server.socket.accept()
+        thread = threading.Thread(target=answer_client, args=(server, connection))
+        thread.start()
+        print("accepted connection")
+    print("loop")
+
     server.close()
 
 
