@@ -13,6 +13,9 @@ def main(client_name: str, server_ip: str, server_port: int):
     client = Client(client_name)
     client.connect_to(server_ip, server_port)
 
+    # Send name to server
+    client.send_str("name " + client_name)
+
     is_open = True
     while is_open:
         print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
