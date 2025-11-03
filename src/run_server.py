@@ -13,7 +13,7 @@ from models.operation import Operation
 
 
 # Executed in an new thread
-def answer_client(server: Server, connection: socket):
+def answer_client(server: Server, connection: socket, lock: threading.Lock):
     # Keep the connection alive, exchanging messages, until it's closed
     is_open = True
     client_name = None
@@ -44,9 +44,11 @@ def answer_client(server: Server, connection: socket):
         elif op_data <= 0:
             server.send_str("Amount must be positive.")
         elif operation == Operation.DEPOSIT:
-            server.client_deposit(client_name, op_data)
+            with lock:
+                server.client_deposit(client_name, op_data)
         elif operation == Operation.WITHDRAW:
-            raise NotImplementedError("Withdraw not implemented")
+            with lock:
+                raise NotImplementedError("Withdraw not implemented")
         else:
             raise RuntimeError("Unknown error")
 
@@ -73,11 +75,16 @@ def main(server_port: int):
     signal.signal(signal.SIGINT, close_server)
     signal.signal(signal.SIGTERM, close_server)
 
+    # Used to lock threads in synchronous functions
+    lock = threading.Lock()
+
     # Accepting connections
     try:
         while True:
             connection, client_address = server.socket.accept()
-            thread = threading.Thread(target=answer_client, args=(server, connection))
+            thread = threading.Thread(
+                target=answer_client, args=(server, connection, lock)
+            )
             thread.start()
             print("accepted connection")
     finally:
