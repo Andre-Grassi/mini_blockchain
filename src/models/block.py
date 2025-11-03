@@ -50,7 +50,7 @@ class Block:
         }
 
     def __repr__(self):
-        if self.hash_b is not None:
+        if self.hash_b is None:
             hash_hex = "None"
         else:
             hash_hex = self.hash_b.hex()
