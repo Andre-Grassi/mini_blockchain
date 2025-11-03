@@ -45,7 +45,7 @@ class Server(NetworkNode):
         hash_obj = hashlib.sha256()
 
         # If it's not the genesis, use last hash
-        if self.block_chain.count() > 0:
+        if len(self.block_chain) > 0:
             last_hash = self.block_chain[-1].hash_b
             hash_obj.update(last_hash)
 
