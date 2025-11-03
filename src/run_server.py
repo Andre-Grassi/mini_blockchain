@@ -6,6 +6,7 @@
 
 import argparse
 import threading
+import signal
 from socket import socket
 from models.server import Server
 from models.operation import Operation
@@ -53,6 +54,7 @@ def answer_client(server: Server, connection: socket):
 
 
 def main(server_port: int):
+
     server = Server(server_port)
 
     print(f"Server IP: {server.ip}")
@@ -63,15 +65,23 @@ def main(server_port: int):
     server.socket.listen(1)
     print("accepting")
 
-    # Accepting connections
-    while True:
-        connection, client_address = server.socket.accept()
-        thread = threading.Thread(target=answer_client, args=(server, connection))
-        thread.start()
-        print("accepted connection")
-    print("loop")
+    # Close server on stop signals
+    def close_server(signum, frame):
+        print("Closing server...")
+        server.close()
 
-    server.close()
+    signal.signal(signal.SIGINT, close_server)
+    signal.signal(signal.SIGTERM, close_server)
+
+    # Accepting connections
+    try:
+        while True:
+            connection, client_address = server.socket.accept()
+            thread = threading.Thread(target=answer_client, args=(server, connection))
+            thread.start()
+            print("accepted connection")
+    finally:
+        server.close()
 
 
 if __name__ == "__main__":
