@@ -46,7 +46,7 @@ class Block:
         return {
             "owner_name": self.owner_name,
             "amount": self.amount,
-            "operation": self.operation,
+            "operation": self.operation.value,
         }
 
     def __repr__(self):
