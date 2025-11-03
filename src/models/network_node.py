@@ -24,11 +24,11 @@ class NetworkNode:
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         self.buffer_size = buffer_size  # OPTIMIZE useless?
 
-    def send_str(self, message: str):
-        self.socket.sendall(message.encode("utf-8"))
+    def send_str(self, connection: socket.socket, message: str):
+        connection.sendall(message.encode("utf-8"))
 
-    def send_bytes(self, message: bytes):
-        self.socket.sendall(message)
+    def send_bytes(self, connection: socket.socket, message: bytes):
+        connection.sendall(message)
 
     def close(self):
         self.socket.close()
@@ -51,14 +51,14 @@ class NetworkNode:
 
         # Check if message has incorrect structure
         if len(parts) < 1 or len(parts) > 2:
-            return None
+            return (None, None)
 
         action = parts[0].lower()
 
         # Check if the action is recognizable
         # UGLY hardcoded actions strings
         if action not in ("deposit", "withdraw", "name", "q"):
-            return None
+            return (None, None)
 
         if action == Operation.QUIT.value:
             return (Operation.QUIT, 0)
