@@ -25,6 +25,8 @@ def main(server_port: int):
     is_open = True
     client_name = None
     while is_open:
+        print(f"Blockchain: {server.block_chain}")
+
         message_bytes = connection.recv(server.buffer_size)
 
         if not message_bytes:
