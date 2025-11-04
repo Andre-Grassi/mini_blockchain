@@ -7,6 +7,7 @@ import json
 import hashlib
 import datetime
 from typing import Optional, List
+import threading
 from models.network_node import NetworkNode
 from models.block import Block
 from models.acc_creation_block import AccCreationBlock
@@ -80,6 +81,48 @@ class Server(NetworkNode):
         new_block.hash_b = self.compute_hash(new_block)
 
         self.block_chain.append(new_block)
+
+    # Executed in an new thread
+    def answer_client(self, connection: socket, lock: threading.Lock):
+        # Keep the connection alive, exchanging messages, until it's closed
+        is_open = True
+        client_name = None
+        while is_open:
+            print(f"Blockchain: {self.block_chain}")
+
+            message_bytes = connection.recv(self.buffer_size)
+
+            if not message_bytes:
+                break  # Connection was closed
+
+            message = message_bytes.decode()
+
+            print(f"received data: {message}")
+
+            (operation, op_data) = self.parse_message(message)
+
+            if operation is None:
+                self.send_str(connection, "Unknow operation.")
+            elif operation == Operation.QUIT:
+                is_open = False
+            elif operation == Operation.NAME:
+                client_name = op_data
+            elif client_name is None:
+                self.send_str(connection, "First, send your name: name <your_name>")
+
+            # Money operations
+            elif op_data <= 0:
+                self.send_str(connection, "Amount must be positive.")
+            elif operation == Operation.DEPOSIT:
+                with lock:
+                    self.client_deposit(client_name, op_data)
+            elif operation == Operation.WITHDRAW:
+                with lock:
+                    raise NotImplementedError("Withdraw not implemented")
+            else:
+                raise RuntimeError("Unknown error")
+
+        connection.close()
 
     def _get_own_ip(self) -> str:
         aux_socket = None
