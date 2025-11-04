@@ -3,15 +3,13 @@
 #
 
 import socket
-import json
 import hashlib
-import datetime
-from typing import Optional, List
+from typing import List
 import threading
 from models.network_node import NetworkNode
 from models.block import Block
-from models.acc_creation_block import AccCreationBlock
 from models.operation import Operation
+from src.models.transaction_handler import Transaction
 
 
 class Server(NetworkNode):
@@ -54,34 +52,6 @@ class Server(NetworkNode):
 
         return hash_obj.digest()
 
-    def client_deposit(self, client_name: str, amount: float):
-        """Processes the deposit of a client.
-
-        Stores the deposit of the client in a new block in the blockchain.
-
-        Args:
-            client_name (str): The identification of the client, can't be empty.
-            amount (float): How many minicoins are being deposited, must be
-            greater than 0.
-
-        """
-        if amount <= 0:
-            raise ValueError("Can't deposit <= 0 minicoins.")
-        if client_name is None:
-            raise ValueError("Client has no name")
-
-        # New client
-        if not (client_name in self.client_ids):
-            self.client_ids.append(client_name)
-            creation_time = datetime.datetime.now(datetime.timezone.utc)
-            new_block = AccCreationBlock(client_name, amount, creation_time)
-        else:
-            new_block = Block(client_name, amount, Operation.DEPOSIT)
-
-        new_block.hash_b = self.compute_hash(new_block)
-
-        self.block_chain.append(new_block)
-
     # Executed in an new thread
     def answer_client(self, connection: socket, lock: threading.Lock):
         # Keep the connection alive, exchanging messages, until it's closed
@@ -115,10 +85,10 @@ class Server(NetworkNode):
                 self.send_str(connection, "Amount must be positive.")
             elif operation == Operation.DEPOSIT:
                 with lock:
-                    self.client_deposit(client_name, op_data)
+                    Transaction.deposit(self, client_name, op_data)
             elif operation == Operation.WITHDRAW:
                 with lock:
-                    raise NotImplementedError("Withdraw not implemented")
+                    Transaction.withdraw(self, client_name, op_data)
             else:
                 raise RuntimeError("Unknown error")
 
