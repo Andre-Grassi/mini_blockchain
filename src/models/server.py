@@ -105,10 +105,23 @@ class Server(NetworkNode):
                 self.send_str(connection, "Unknow operation.")
             elif operation == Operation.QUIT:
                 is_open = False
-            elif operation == Operation.NAME:
-                client_name = op_data
+            # Cannot proceed until name is registered
             elif client_name is None:
-                self.send_str(connection, "First, send your name: name <your_name>")
+                if operation == Operation.NAME:
+                    if op_data is not None:
+                        if op_data not in self.client_ids:
+                            client_name = op_data
+                            self.client_ids.append(client_name)
+                        else:
+                            self.send_str(
+                                connection, "Name already registered by another client"
+                            )
+                    else:
+                        self.send_str(
+                            connection, "First, send your name: name <your_name>"
+                        )
+                else:
+                    self.send_str(connection, "First, send your name: name <your_name>")
 
             # Money operations
             elif op_data <= 0:
