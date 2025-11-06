@@ -5,6 +5,7 @@ import datetime
 from models.block import Block
 from models.acc_creation_block import AccCreationBlock
 from models.operation import Operation
+from models.hash import Hash
 
 class Transaction:
     @staticmethod
@@ -13,6 +14,19 @@ class Transaction:
             raise ValueError("Can't deposit <= 0 minicoins.")
         if client_name is None:
             raise ValueError("Client has no name")
+        
+    @staticmethod
+    def current_balance (server: Server, client_name: str):
+        for block in server.block_chain:
+            if (block.owner_name == client_name):
+                if (Hash.solve_hash(Hash, server, block)):
+                    raise ValueError("Blockchain corrupted!")
+                elif (block.operation == 'deposit'):
+                    sum += block.amount
+                elif (block.operation == 'withdraw'):
+                    sum -= block.amount
+
+        return sum
         
     def deposit(server: Server, client_name: str, amount: float):
         """Processes the deposit of a client.
@@ -36,7 +50,7 @@ class Transaction:
         else:
             new_block = Block(client_name, amount, Operation.DEPOSIT)
 
-        new_block.hash_b = server.compute_hash(new_block)
+        new_block.hash_b = Hash.compute_hash(new_block)
 
         server.block_chain.append(new_block)
 
@@ -54,11 +68,14 @@ class Transaction:
         
         Transaction.validation(client_name, amount)
         
+        if Transaction.current_balance(server, client_name) < amount:
+            raise ValueError("Can't withdraw more money than the current balance amount")
+
         if not (client_name in server.client_ids):
             raise ValueError("Can't withdraw value from an inexisting account")
         else:
-            new_block = Block(client_name, amount, Operation.DEPOSIT)
+            new_block = Block(client_name, amount, Operation.WITHDRAW)
 
-        new_block.hash_b = server.compute_hash(new_block)
+        new_block.hash_b = Hash.compute_hash(new_block)
 
         server.block_chain.append(new_block)

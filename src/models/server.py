@@ -3,14 +3,13 @@
 #
 
 import socket
-import hashlib
+
 from typing import List
 import threading
 from models.network_node import NetworkNode
-from models.block import Block
 from models.operation import Operation
 from src.models.transaction_handler import Transaction
-
+from models.block import Block
 
 class Server(NetworkNode):
     """The server of the blockchain.
@@ -36,21 +35,6 @@ class Server(NetworkNode):
 
     def bind_socket(self):
         self.socket.bind((self.ip, self.port))
-
-    def compute_hash(self, block: Block) -> bytes:
-        """Calculates the hash for the block using SHA256"""
-        payload = block.serialize()
-
-        hash_obj = hashlib.sha256()
-
-        # If it's not the genesis, use last hash
-        if len(self.block_chain) > 0:
-            last_hash = self.block_chain[-1].hash_b
-            hash_obj.update(last_hash)
-
-        hash_obj.update(payload)
-
-        return hash_obj.digest()
 
     # Executed in an new thread
     def answer_client(self, connection: socket, lock: threading.Lock):

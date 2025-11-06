@@ -10,3 +10,4 @@ class Operation(Enum):
     WITHDRAW = "withdraw"
     QUIT = "q"
     NAME = "name"
+
