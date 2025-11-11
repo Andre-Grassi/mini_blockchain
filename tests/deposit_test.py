@@ -3,6 +3,8 @@ import threading
 from socket import socket
 from models.server import Server
 from models.operation import Operation
+from models.transaction_handler import Transaction
+from models.hash import Hash
 
 
 # --- The Test ---
