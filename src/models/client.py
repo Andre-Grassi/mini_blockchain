@@ -2,16 +2,16 @@
 # Authors: Andre Grassi de Jesus, Ricardo Faria
 #
 
-import socket
 from models.network_node import NetworkNode
-from models.operation import Operation
+
 
 class Client(NetworkNode):
     """Client of the blockchain. Can deposit and withdraw minicoins.
-    
-        Attributes:
-            name (str): Identification of the client.
+
+    Attributes:
+        name (str): Identification of the client.
     """
+
     def __init__(self, name: str):
         super().__init__()
 
