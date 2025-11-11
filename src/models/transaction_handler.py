@@ -47,26 +47,36 @@ class Transaction:
             return (False, status)
 
         if operation == Operation.DEPOSIT:
-            Transaction._deposit(server, client_name, amount)
+            new_block = Transaction._create_deposit_block(server, client_name, amount)
         else:
-            Transaction._withdraw(server, client_name, amount)
+            new_block = Transaction._create_withdraw_block(server, client_name, amount)
+
+        # Add hash to the new block
+        prev_block = None
+        # Check if it's the genesis block
+        if len(server.block_chain) > 0:
+            prev_block = server.block_chain[-1]
+        new_block.hash_b = Hash.compute_hash(server, new_block, prev_block)
+
+        server.block_chain.append(new_block)
 
         return (True, "ok")
 
     @staticmethod
-    def _deposit(server: Server, client_name: str, amount: float):
-        """Processes the deposit of a client.
+    def _create_deposit_block(server: Server, client_name: str, amount: float):
+        """Create the deposit block of a client.
 
-        Stores the deposit of the client in a new block in the blockchain.
+        Does not calculate the hash, because it depends on the previous block.
 
         Args:
+            server (Server): The server with the blockchain.
             client_name (str): The identification of the client, can't be empty.
             amount (float): How many minicoins are being deposited, must be
             greater than 0.
 
         Returns:
-            Bool indicating if the validation was ok, and a status message:
-            (bool, str)
+            New block instantiated.
+            If it's the first deposit of the client, returns AccCreationBlock.
 
         """
 
@@ -80,42 +90,32 @@ class Transaction:
         if is_new_client:
             creation_time = datetime.datetime.now(datetime.timezone.utc)
             new_block = AccCreationBlock(client_name, amount, creation_time)
+
         # Normal block (old client)
         else:
             new_block = Block(client_name, amount, Operation.DEPOSIT)
 
-        prev_block = None
-        if len(server.block_chain) > 0:
-            prev_block = server.block_chain[-1]
-
-        new_block.hash_b = Hash.compute_hash(server, new_block, prev_block)
-
-        server.block_chain.append(new_block)
+        return new_block
 
     @staticmethod
-    def _withdraw(server: Server, client_name: str, amount: float):
-        """Processes the deposit of a client.
+    def _create_withdraw_block(server: Server, client_name: str, amount: float):
+        """Create the withdraw block of a client.
 
-        Stores the deposit of the client in a new block in the blockchain.
+        Does not calculate the hash, because it depends on the previous block.
 
         Args:
+            server (Server): The server with the blockchain.
             client_name (str): The identification of the client, can't be empty.
-            amount (float): How many minicoins are being deposited, must be
+            amount (float): How many minicoins are being withdrawn, must be
             greater than 0.
 
         Returns:
-            Bool indicating if the validation was ok, and a status message:
-            (bool, str)
+            New block instantiated.
+            If it's the first deposit of the client, returns AccCreationBlock.
 
         """
         new_block = Block(client_name, amount, Operation.WITHDRAW)
-
-        prev_block = None
-        if len(server.block_chain) > 0:
-            prev_block = server.block_chain[-1]
-        new_block.hash_b = Hash.compute_hash(server, new_block, prev_block)
-
-        server.block_chain.append(new_block)
+        return new_block
 
     @staticmethod
     def _validate(
@@ -124,6 +124,8 @@ class Transaction:
         """
         Can only validate transactions, which means that this method only
         validate Operation.DEPOSIT and Operation.WITHDRAW.
+
+        TODO: document exceptions
 
         Returns:
             Bool indicating if the validation was ok, and a status message:
