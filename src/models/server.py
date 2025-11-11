@@ -39,17 +39,30 @@ class Server(NetworkNode):
         self.socket.bind((self.ip, self.port))
 
     # Executed in an new thread
-    def answer_client(self, connection: socket, lock: threading.Lock):
+    def answer_client(
+        self, connection: socket, lock: threading.Lock, shutdown_event: threading.Event
+    ):
         # Keep the connection alive, exchanging messages, until it's closed
         is_open = True
         client_name = None
-        while is_open:
-            print(f"Blockchain: {self.block_chain}")
+        while is_open and not shutdown_event.is_set():
 
-            message_bytes = connection.recv(self.buffer_size)
+            # Set short timeout to check shutdown_event periodically
+            connection.settimeout(1.0)
+
+            try:
+                message_bytes = connection.recv(self.buffer_size)
+            except TimeoutError:
+                # Timeout to check shutdown_event
+                continue
+            except OSError:
+                # Connection error
+                break
 
             if not message_bytes:
                 break  # Connection was closed
+
+            print(f"Blockchain: {self.block_chain}")
 
             message = message_bytes.decode()
 
@@ -98,6 +111,7 @@ class Server(NetworkNode):
             else:
                 raise RuntimeError("Unknown error")
 
+        self.send_str(connection, "Server shutting down.")  # BUG Client not receiving
         connection.close()
 
     def _get_own_ip(self) -> str:
