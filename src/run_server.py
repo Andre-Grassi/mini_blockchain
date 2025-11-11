@@ -7,7 +7,7 @@
 import argparse
 import threading
 import signal
-from socket import socket
+import socket
 
 from models.server import Server
 from models.operation import Operation
@@ -28,7 +28,7 @@ def main(server_port: int):
     # Close server on stop signals
     def close_server(signum, frame):
         print("Closing server...")
-        server.close()
+        server.socket.shutdown(socket.SHUT_RDWR)
 
     signal.signal(signal.SIGINT, close_server)
     signal.signal(signal.SIGTERM, close_server)
