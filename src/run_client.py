@@ -31,6 +31,8 @@ def main(client_name: str, server_ip: str, server_port: int):
             is_open = False
 
         # Listen server response
+        # Attention: the client will ALWAYS wait for a server response here and
+        # won't proceed without receiving something.
         message_bytes = connection.recv(client.buffer_size)
 
         if not message_bytes:
