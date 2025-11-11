@@ -124,6 +124,7 @@ class Transaction:
         """
         Can only validate transactions, which means that this method only
         validate Operation.DEPOSIT and Operation.WITHDRAW.
+        DOES NOT check if the hashes are correct, that is done in Hash class.
 
         TODO: document exceptions
 
