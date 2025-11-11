@@ -80,12 +80,10 @@ class Server(NetworkNode):
                     self.send_str(connection, "First, send your name: name <your_name>")
 
             # Money operations
-            elif op_data <= 0:
-                self.send_str(connection, "Amount must be positive.")
-            elif operation == Operation.DEPOSIT:
+            elif operation == Operation.DEPOSIT or operation == Operation.WITHDRAW:
                 with lock:
-                    (is_transaction_valid, status) = Transaction.deposit(
-                        self, client_name, op_data
+                    (is_transaction_valid, status) = Transaction.execute_transaction(
+                        self, client_name, op_data, operation
                     )
 
                     is_blockchain_valid = False
@@ -97,22 +95,6 @@ class Server(NetworkNode):
                             status = "Corrupted block's hash"
 
                     self.send_str(connection, status)
-
-            elif operation == Operation.WITHDRAW:
-                with lock:
-                    (is_transaction_valid, status) = Transaction.withdraw(
-                        self, client_name, op_data
-                    )
-
-                    if is_transaction_valid:
-                        is_blockchain_valid = Hash.validate_blockchain_hash(self)
-
-                        if not is_blockchain_valid:
-                            self.block_chain.pop()  # Pop last invalid block
-                            status = "Corrupted block's hash"
-
-                    self.send_str(connection, status)
-
             else:
                 raise RuntimeError("Unknown error")
 
