@@ -22,3 +22,12 @@ class AccCreationBlock(Block):
         super().__init__(owner_name, amount, Operation.DEPOSIT)
 
         self.date = date
+
+    def __repr__(self):
+        if self.hash_b is None:
+            hash_hex = "None"
+        else:
+            hash_hex = self.hash_b.hex()
+
+        date_str = self.date.strftime("%Y-%m-%d %H:%M:%S")
+        return f"Creation Block {self.owner_name} {date_str} {self.amount}\n{hash_hex}"
