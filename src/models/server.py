@@ -3,13 +3,15 @@
 #
 
 import socket
-
 from typing import List
 import threading
+
 from models.network_node import NetworkNode
 from models.operation import Operation
-from src.models.transaction_handler import Transaction
+from models.transaction_handler import Transaction
 from models.block import Block
+from models.hash import Hash
+
 
 class Server(NetworkNode):
     """The server of the blockchain.
@@ -82,10 +84,35 @@ class Server(NetworkNode):
                 self.send_str(connection, "Amount must be positive.")
             elif operation == Operation.DEPOSIT:
                 with lock:
-                    Transaction.deposit(self, client_name, op_data)
+                    (is_transaction_valid, status) = Transaction.deposit(
+                        self, client_name, op_data
+                    )
+
+                    is_blockchain_valid = False
+                    if is_transaction_valid:
+                        is_blockchain_valid = Hash.validate_blockchain_hash(self)
+
+                        if not is_blockchain_valid:
+                            self.block_chain.pop()  # Pop last invalid block
+                            status = "Corrupted block's hash"
+
+                    self.send_str(connection, status)
+
             elif operation == Operation.WITHDRAW:
                 with lock:
-                    Transaction.withdraw(self, client_name, op_data)
+                    (is_transaction_valid, status) = Transaction.withdraw(
+                        self, client_name, op_data
+                    )
+
+                    if is_transaction_valid:
+                        is_blockchain_valid = Hash.validate_blockchain_hash(self)
+
+                        if not is_blockchain_valid:
+                            self.block_chain.pop()  # Pop last invalid block
+                            status = "Corrupted block's hash"
+
+                    self.send_str(connection, status)
+
             else:
                 raise RuntimeError("Unknown error")
 
