@@ -78,13 +78,9 @@ class Server(NetworkNode):
             elif client_name is None:
                 if operation == Operation.NAME:
                     if op_data is not None:
+                        client_name = op_data
                         if op_data not in self.client_ids:
-                            client_name = op_data
                             self.client_ids.append(client_name)
-                        else:
-                            self.send_str(
-                                connection, "Name already registered by another client"
-                            )
                     else:
                         self.send_str(
                             connection, "First, send your name: name <your_name>"
@@ -111,7 +107,13 @@ class Server(NetworkNode):
             else:
                 raise RuntimeError("Unknown error")
 
+        print("Closing connection with client " + client_name)
         self.send_str(connection, "Server shutting down.")  # BUG Client not receiving
+        try:
+            connection.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass  # Client already closed the connection
+
         connection.close()
 
     def _get_own_ip(self) -> str:
