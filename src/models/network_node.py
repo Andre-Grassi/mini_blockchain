@@ -5,6 +5,7 @@
 
 import socket
 from typing import Optional
+
 from models.operation import Operation
 
 BUFFER_SIZE = 1024
