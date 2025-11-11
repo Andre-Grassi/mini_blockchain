@@ -39,7 +39,6 @@ class Block:
 
     def serialize(self) -> bytes:
         """Transforms the Block in a JSON object for hashing."""
-        # BUG here
         json_s = json.dumps(self.to_dict(), sort_keys=True)
         return json_s.encode("utf-8")
 
