@@ -22,6 +22,9 @@ def main(server_port: int):
     server.bind_socket()
     server.socket.listen(5)
 
+    # Set timeout on listening socket to check shutdown_event periodically
+    server.socket.settimeout(1.0)
+
     print(f"Server listening on {server.ip}:{server_port}")
 
     # Shared state
@@ -36,12 +39,6 @@ def main(server_port: int):
 
         # Signal all threads to stop
         shutdown_event.set()
-
-        # Close socket to unblock accept()
-        try:
-            server.socket.shutdown(socket.SHUT_RDWR)
-        except OSError:
-            pass
 
     # Register signal handlers
     signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
@@ -70,10 +67,18 @@ def main(server_port: int):
                 active_threads.append(thread)
                 thread.start()
 
+                # Remove finished threads
+                active_threads = [t for t in active_threads if t.is_alive()]
+
+            except socket.timeout:  # Not an actual error
+                continue
+
             except OSError:
                 # Socket closed by signal handler
                 if shutdown_event.is_set():
                     break
+
+                # Unexpected error
                 raise
 
     finally:
@@ -86,10 +91,7 @@ def main(server_port: int):
                 print(f"Warning: {thread.name} did not finish in time")
 
         # Final cleanup
-        try:
-            server.socket.close()
-        except:
-            pass
+        server.terminate()
 
         print("Server stopped")
 
