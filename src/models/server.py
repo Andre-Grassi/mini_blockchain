@@ -62,8 +62,6 @@ class Server(NetworkNode):
             if not message_bytes:
                 break  # Connection was closed
 
-            print(f"Blockchain: {self.block_chain}")
-
             message = message_bytes.decode()
 
             print(f"received data: {message}")
@@ -106,6 +104,8 @@ class Server(NetworkNode):
                     self.send_str(connection, status)
             else:
                 raise RuntimeError("Unknown error")
+
+            print(f"Blockchain: {self.block_chain}")
 
         print("Closing connection with client " + client_name)
         self.send_str(connection, "Server shutting down connection.")
