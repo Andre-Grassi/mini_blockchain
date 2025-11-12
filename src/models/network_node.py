@@ -33,6 +33,17 @@ class NetworkNode:
 
     def close(self):
         self.socket.close()
+    
+    def terminate(self):
+        try:
+            self.socket.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass
+
+        try:
+            self.socket.close()
+        except OSError:
+            pass
 
     def parse_message(self, message: str):
         """Retrieves the info from the message.
