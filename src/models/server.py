@@ -108,7 +108,7 @@ class Server(NetworkNode):
                 raise RuntimeError("Unknown error")
 
         print("Closing connection with client " + client_name)
-        self.send_str(connection, "Server shutting down.")  # BUG Client not receiving
+        self.send_str(connection, "Server shutting down connection.")
         try:
             connection.shutdown(socket.SHUT_RDWR)
         except OSError:
