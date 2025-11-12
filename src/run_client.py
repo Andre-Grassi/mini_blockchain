@@ -21,7 +21,7 @@ def input_thread(input_queue: Queue, shutdown_event: threading.Event):
 
     while not shutdown_event.is_set():
         try:
-            message = input("Type action and amount: ")
+            message = input()
             if message:
                 input_queue.put(message)
         except EOFError:
