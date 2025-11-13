@@ -18,7 +18,10 @@ class Client(NetworkNode):
         self.name = name
 
     def connect_to(self, server_ip: str, server_port: int):
-        self.socket.connect((server_ip, server_port))
+        """Connects the client to the server.
 
-    def deposit(self, amount: float):
-        return
+        Args:
+            server_ip (str): IP address of the server.
+            server_port (int): Port of the server.
+        """
+        self.socket.connect((server_ip, server_port))
