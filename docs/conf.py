@@ -11,6 +11,8 @@ import os
 import sys
 
 sys.path.insert(0, os.path.abspath("../src"))
+sys.path.insert(0, os.path.abspath("../src/models"))
+
 
 project = "Mini Blockchain"
 copyright = "2025, Andre Grassi, Ricardo Faria"

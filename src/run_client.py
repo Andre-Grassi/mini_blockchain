@@ -7,6 +7,27 @@
 import argparse
 from models.client import Client
 from models.operation import Operation
+import signal
+import socket
+from queue import Queue, Empty
+import threading
+import os
+
+
+def input_thread(input_queue: Queue, shutdown_event: threading.Event):
+    """Thread to read user input without blocking main loop."""
+
+    print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
+
+    while not shutdown_event.is_set():
+        try:
+            message = input()
+            if message:
+                input_queue.put(message)
+        except EOFError:
+            # Ctrl+D pressed
+            shutdown_event.set()
+            break
 
 
 def main(client_name: str, server_ip: str, server_port: int):
@@ -14,35 +35,74 @@ def main(client_name: str, server_ip: str, server_port: int):
     client.connect_to(server_ip, server_port)
     connection = client.socket
 
+    # Set socket timeout to keep checking for shutdown_event
+    connection.settimeout(1.0)
+
     # Send name to server
     client.send_str(connection, "name " + client_name)
 
-    is_open = True
-    while is_open:
-        # Send command
-        print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
-        message = input("Type action and amount:\n")
+    shutdown_event = threading.Event()
+    input_queue = Queue()
 
-        (action, _) = client.parse_message(message)
-        client.send_str(connection, message)
+    def signal_handler(signum, frame):
+        """Handle shutdown signals gracefully."""
 
-        if action is not None and action == Operation.QUIT.value:
-            print("Quitting.")
-            is_open = False
+        sig_name = signal.Signals(signum).name
+        print(f"\n{sig_name} received, shutting down...")
 
-        # Listen server response
-        # Attention: the client will ALWAYS wait for a server response here and
-        # won't proceed without receiving something.
-        message_bytes = connection.recv(client.buffer_size)
+        shutdown_event.set()
 
-        if not message_bytes:
-            break  # Connection was closed
+    # Register signal handlers
+    signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
+    signal.signal(signal.SIGTERM, signal_handler)  # Terminate signal
+    signal.signal(signal.SIGHUP, signal_handler)  # Hangup signal
 
-        message = message_bytes.decode()
+    # Start input thread
+    input_thread_obj = threading.Thread(
+        target=input_thread,
+        args=(input_queue, shutdown_event),
+        daemon=True,
+        name="InputThread",
+    )
+    input_thread_obj.start()
 
-        print(f"received data: {message}")
+    try:
+        while not shutdown_event.is_set():
+            try:
+                message = input_queue.get_nowait()
 
-    client.close()
+                (action, _) = client.parse_message(message)
+                client.send_str(connection, message)
+
+                if action is not None and action == Operation.QUIT.value:
+                    print("Quitting.")
+                    shutdown_event.set()
+
+            except Empty:  # No input received from user
+                pass
+
+            # Listen server response
+            # Attention: the client will ALWAYS wait for a server response here and
+            # won't proceed without receiving something.
+            try:
+                recv_message_b = connection.recv(client.buffer_size)
+
+                if not recv_message_b:
+                    break  # Connection was closed, Break immediately
+
+                recv_message = recv_message_b.decode()
+
+                print(f"received data: {recv_message}")
+
+            except socket.timeout:
+                continue  # Normal execution
+
+    except OSError:
+        print("Closed")
+
+    client.terminate()
+
+    os._exit(0)  # Force exit, because input_thread is blocked by input function
 
 
 if __name__ == "__main__":

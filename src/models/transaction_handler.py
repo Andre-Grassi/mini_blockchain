@@ -19,6 +19,15 @@ if TYPE_CHECKING:
 
 
 class Transaction:
+    """Handles the transactions (deposits and withdraws) of clients.
+
+    Responsible for validating and executing transactions, creating blocks in
+    the blockchain. Do not verify hashes, that is done in Hash class.
+
+    Attributes:
+        None
+    """
+
     @staticmethod
     def execute_transaction(
         server: Server, client_name: str, amount: float, operation: Operation
@@ -63,7 +72,7 @@ class Transaction:
         return (True, "ok")
 
     @staticmethod
-    def _create_deposit_block(server: Server, client_name: str, amount: float):
+    def _create_deposit_block(server: Server, client_name: str, amount: float) -> Block:
         """Create the deposit block of a client.
 
         Does not calculate the hash, because it depends on the previous block.
@@ -98,7 +107,9 @@ class Transaction:
         return new_block
 
     @staticmethod
-    def _create_withdraw_block(server: Server, client_name: str, amount: float):
+    def _create_withdraw_block(
+        server: Server, client_name: str, amount: float
+    ) -> Block:
         """Create the withdraw block of a client.
 
         Does not calculate the hash, because it depends on the previous block.
@@ -131,6 +142,11 @@ class Transaction:
         Returns:
             Bool indicating if the validation was ok, and a status message:
             (bool, str)
+
+        Raises:
+            ValueError: If client_name does not exist in server.client_ids
+            ValueError: If client_name is None
+            ValueError: If operation is not DEPOSIT or WITHDRAW
         """
         # Fatal error
         if not (client_name in server.client_ids):
@@ -156,7 +172,8 @@ class Transaction:
         return (True, "ok")
 
     @staticmethod
-    def _current_balance(server: Server, client_name: str):
+    def _current_balance(server: Server, client_name: str) -> float:
+        """Calculates the current balance of a client."""
         balance = 0
         for block in server.block_chain:
             if block.owner_name == client_name:

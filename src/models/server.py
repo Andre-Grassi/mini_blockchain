@@ -39,14 +39,32 @@ class Server(NetworkNode):
         self.socket.bind((self.ip, self.port))
 
     # Executed in an new thread
-    def answer_client(self, connection: socket, lock: threading.Lock):
+    def answer_client(
+        self, connection: socket, lock: threading.Lock, shutdown_event: threading.Event
+    ) -> None:
+        """Handles the communication with a client.
+
+        Args:
+            connection (socket): The socket connected to the client.
+            lock (threading.Lock): Lock to protect shared state.
+            shutdown_event (threading.Event): Event to signal shutdown.
+        """
         # Keep the connection alive, exchanging messages, until it's closed
         is_open = True
         client_name = None
-        while is_open:
-            print(f"Blockchain: {self.block_chain}")
+        while is_open and not shutdown_event.is_set():
 
-            message_bytes = connection.recv(self.buffer_size)
+            # Set short timeout to check shutdown_event periodically
+            connection.settimeout(1.0)
+
+            try:
+                message_bytes = connection.recv(self.buffer_size)
+            except TimeoutError:
+                # Timeout to check shutdown_event
+                continue
+            except OSError:
+                # Connection error
+                break
 
             if not message_bytes:
                 break  # Connection was closed
@@ -65,13 +83,9 @@ class Server(NetworkNode):
             elif client_name is None:
                 if operation == Operation.NAME:
                     if op_data is not None:
+                        client_name = op_data
                         if op_data not in self.client_ids:
-                            client_name = op_data
                             self.client_ids.append(client_name)
-                        else:
-                            self.send_str(
-                                connection, "Name already registered by another client"
-                            )
                     else:
                         self.send_str(
                             connection, "First, send your name: name <your_name>"
@@ -98,9 +112,25 @@ class Server(NetworkNode):
             else:
                 raise RuntimeError("Unknown error")
 
+            print(f"Blockchain: {self.block_chain}")
+
+        print("Closing connection with client " + client_name)
+        self.send_str(connection, "Server shutting down connection.")
+        try:
+            connection.shutdown(socket.SHUT_RDWR)
+        except OSError:
+            pass  # Client already closed the connection
+
         connection.close()
 
     def _get_own_ip(self) -> str:
+        """Gets the local IP address of the server.
+
+        Connects to an external IP with UDP to determine the local IP.
+
+        Returns:
+            str: The local IP address. If it fails, returns None.
+        """
         aux_socket = None
         try:
             # Create a UDP socket

@@ -17,7 +17,7 @@ class Block:
         amount (float): The amount of minicoins involved in the operation.
         operation (Operation): The action that the client did.
         hash_b (bytes): The hash of the block. It's initialized as None and
-        must be computed and set by the server.
+        must be computed and set by the server with Hash class.
     """
 
     def __init__(
@@ -43,6 +43,7 @@ class Block:
         return json_s.encode("utf-8")
 
     def to_dict(self) -> dict:
+        """Transforms the Block into a dictionary for serialization."""
         return {
             "owner_name": self.owner_name,
             "amount": self.amount,

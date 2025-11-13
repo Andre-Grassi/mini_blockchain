@@ -12,6 +12,10 @@ from models.block import Block
 class AccCreationBlock(Block):
     """Special block, used for the first deposit of a new client.
 
+    The operation is always a deposit, and it also stores the date of the
+    account creation. This first deposit is considered the account creation
+    (still, the client needs to send their name first).
+
     Attributes:
         date (datetime): The date and hour (UTC) that the client's account was
         "created".
