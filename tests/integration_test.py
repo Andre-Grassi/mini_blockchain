@@ -6,6 +6,7 @@ from models.server import Server
 from models.client import Client
 import run_server
 import run_client
+import sys
 
 
 def test_integration():
@@ -17,6 +18,11 @@ def test_integration():
 
     # Give server time to start
     time.sleep(0.1)
+
+    fake_input = io.StringIO("first line\nsecond line\n")  # whatever the client expects
+
+    old_stdin = sys.stdin
+    sys.stdin = fake_input
 
     # Step 2: Start client and connect to server
     client_thread = threading.Thread(
