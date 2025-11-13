@@ -6,6 +6,8 @@ from enum import Enum
 
 
 class Operation(Enum):
+    """Defines the types of operations that can be performed by the client."""
+
     DEPOSIT = "deposit"
     WITHDRAW = "withdraw"
     QUIT = "q"
