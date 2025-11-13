@@ -11,6 +11,7 @@ Welcome to Mini Blockchain's documentation!
    :caption: Contents:
 
    models/modules
+   modules
 
 
 
