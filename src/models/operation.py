@@ -11,4 +11,4 @@ class Operation(Enum):
     DEPOSIT = "deposit"
     WITHDRAW = "withdraw"
     QUIT = "q"
-    NAME = "name"
+    NAME = "name"  # Operation that informs the server of the client's name
