@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+
+<html lang="pt-BR" data-content_root="../">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>hash &#8212; Documentação Mini Blockchain 0.1</title>
+    <link rel="stylesheet" type="text/css" href="../_static/pygments.css?v=5ecbeea2" />
+    <link rel="stylesheet" type="text/css" href="../_static/basic.css?v=b08954a9" />
+    <link rel="stylesheet" type="text/css" href="../_static/alabaster.css?v=27fed22d" />
+    <script src="../_static/documentation_options.js?v=88519e4e"></script>
+    <script src="../_static/doctools.js?v=9bcbadda"></script>
+    <script src="../_static/sphinx_highlight.js?v=dc90522c"></script>
+    <script src="../_static/translations.js?v=71a39b36"></script>
+    <link rel="index" title="Índice" href="../genindex.html" />
+    <link rel="search" title="Buscar" href="../search.html" />
+   
+  <link rel="stylesheet" href="../_static/custom.css" type="text/css" />
+  
+
+  
+  
+
+  </head><body>
+  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          
+
+          <div class="body" role="main">
+            
+  <h1>Código-fonte para hash</h1><div class="highlight"><pre>
+<span></span><span class="c1">#</span>
+<span class="c1"># Authors: Andre Grassi de Jesus, Ricardo Faria</span>
+<span class="c1">#</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">__future__</span><span class="w"> </span><span class="kn">import</span> <span class="n">annotations</span>
+
+<span class="kn">import</span><span class="w"> </span><span class="nn">hashlib</span>
+<span class="kn">from</span><span class="w"> </span><span class="nn">typing</span><span class="w"> </span><span class="kn">import</span> <span class="n">TYPE_CHECKING</span>
+
+<span class="kn">from</span><span class="w"> </span><span class="nn">models.block</span><span class="w"> </span><span class="kn">import</span> <span class="n">Block</span>
+
+<span class="c1"># Imports Server only during static type checking (not at runtime) to avoid</span>
+<span class="c1"># circular dependency.</span>
+<span class="k">if</span> <span class="n">TYPE_CHECKING</span><span class="p">:</span>
+    <span class="kn">from</span><span class="w"> </span><span class="nn">models.server</span><span class="w"> </span><span class="kn">import</span> <span class="n">Server</span>
+
+
+<div class="viewcode-block" id="Hash">
+<a class="viewcode-back" href="../models/hash.html#hash.Hash">[documentos]</a>
+<span class="k">class</span><span class="w"> </span><span class="nc">Hash</span><span class="p">:</span>
+<span class="w">    </span><span class="sd">&quot;&quot;&quot;Handles the hashing of blocks in the blockchain.</span>
+
+<span class="sd">    Uses SHA256 to compute and validate hashes of blocks.</span>
+<span class="sd">    If it detects an invalid hash, only warns about it, does not correct it. The</span>
+<span class="sd">    server must pop the invalid blocks itself.</span>
+
+<span class="sd">    Attributes:</span>
+<span class="sd">        None</span>
+<span class="sd">    &quot;&quot;&quot;</span>
+
+<div class="viewcode-block" id="Hash.compute_hash">
+<a class="viewcode-back" href="../models/hash.html#hash.Hash.compute_hash">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">compute_hash</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="n">Server</span><span class="p">,</span> <span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">:</span> <span class="n">Block</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bytes</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Calculates the hash for the block using SHA256</span>
+
+<span class="sd">        Previous block&#39;s hash is included in the computation, except for the</span>
+<span class="sd">        genesis block, in this case pass None as previous_block.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            server (Server): The server with the blockchain</span>
+<span class="sd">            block (Block): The block to compute the hash for</span>
+<span class="sd">            previous_block (Block): The previous block in the chain, or None for</span>
+<span class="sd">            the genesis block.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bytes: The computed hash of the block.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="n">payload</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">serialize</span><span class="p">()</span>
+
+        <span class="n">hash_obj</span> <span class="o">=</span> <span class="n">hashlib</span><span class="o">.</span><span class="n">sha256</span><span class="p">()</span>
+
+        <span class="c1"># If it&#39;s not the genesis, use last hash</span>
+        <span class="k">if</span> <span class="n">previous_block</span> <span class="ow">is</span> <span class="ow">not</span> <span class="kc">None</span><span class="p">:</span>
+            <span class="n">last_hash</span> <span class="o">=</span> <span class="n">previous_block</span><span class="o">.</span><span class="n">hash_b</span>
+            <span class="n">hash_obj</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">last_hash</span><span class="p">)</span>
+
+        <span class="n">hash_obj</span><span class="o">.</span><span class="n">update</span><span class="p">(</span><span class="n">payload</span><span class="p">)</span>
+
+        <span class="k">return</span> <span class="n">hash_obj</span><span class="o">.</span><span class="n">digest</span><span class="p">()</span></div>
+
+
+<div class="viewcode-block" id="Hash.validate_block_hash">
+<a class="viewcode-back" href="../models/hash.html#hash.Hash.validate_block_hash">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_block_hash</span><span class="p">(</span>
+        <span class="n">server</span><span class="p">:</span> <span class="n">Server</span><span class="p">,</span> <span class="n">block</span><span class="p">:</span> <span class="n">Block</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">:</span> <span class="n">Block</span>
+    <span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates the hash of a block.</span>
+
+<span class="sd">        Checks if the stored hash in the block matches the computed hash.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            server (Server): The server with the blockchain</span>
+<span class="sd">            block (Block): The block to validate</span>
+<span class="sd">            previous_block (Block): The previous block in the chain, or None for</span>
+<span class="sd">            the genesis block.</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the hash is valid, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="c1"># Validate current block&#39;s hash</span>
+        <span class="n">is_hash_valid</span> <span class="o">=</span> <span class="n">block</span><span class="o">.</span><span class="n">hash_b</span> <span class="o">==</span> <span class="n">Hash</span><span class="o">.</span><span class="n">compute_hash</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">block</span><span class="p">,</span> <span class="n">previous_block</span><span class="p">)</span>
+        <span class="k">return</span> <span class="n">is_hash_valid</span></div>
+
+
+<div class="viewcode-block" id="Hash.validate_blockchain_hash">
+<a class="viewcode-back" href="../models/hash.html#hash.Hash.validate_blockchain_hash">[documentos]</a>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span><span class="w"> </span><span class="nf">validate_blockchain_hash</span><span class="p">(</span><span class="n">server</span><span class="p">:</span> <span class="n">Server</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">bool</span><span class="p">:</span>
+<span class="w">        </span><span class="sd">&quot;&quot;&quot;Validates the entire blockchain&#39;s hashes.</span>
+
+<span class="sd">        Needs to be called after adding a new block to ensure the integrity</span>
+<span class="sd">        of the blockchain.</span>
+
+<span class="sd">        Args:</span>
+<span class="sd">            server (Server): The server with the blockchain</span>
+
+<span class="sd">        Returns:</span>
+<span class="sd">            bool: True if the entire blockchain is valid, False otherwise.</span>
+<span class="sd">        &quot;&quot;&quot;</span>
+        <span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">block_chain</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">:</span>
+            <span class="c1"># Validate genesis block</span>
+            <span class="n">is_genesis_valid</span> <span class="o">=</span> <span class="n">Hash</span><span class="o">.</span><span class="n">validate_block_hash</span><span class="p">(</span>
+                <span class="n">server</span><span class="p">,</span> <span class="n">server</span><span class="o">.</span><span class="n">block_chain</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="kc">None</span>
+            <span class="p">)</span>
+
+            <span class="k">if</span> <span class="ow">not</span> <span class="n">is_genesis_valid</span><span class="p">:</span>
+                <span class="k">return</span> <span class="kc">False</span>
+
+            <span class="c1"># Validate all blocks</span>
+            <span class="k">for</span> <span class="n">index</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nb">len</span><span class="p">(</span><span class="n">server</span><span class="o">.</span><span class="n">block_chain</span><span class="p">)):</span>
+                <span class="n">curr_block</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">block_chain</span><span class="p">[</span><span class="n">index</span><span class="p">]</span>
+                <span class="n">prev_block</span> <span class="o">=</span> <span class="n">server</span><span class="o">.</span><span class="n">block_chain</span><span class="p">[</span><span class="n">index</span> <span class="o">-</span> <span class="mi">1</span><span class="p">]</span>
+                <span class="k">if</span> <span class="ow">not</span> <span class="n">Hash</span><span class="o">.</span><span class="n">validate_block_hash</span><span class="p">(</span><span class="n">server</span><span class="p">,</span> <span class="n">curr_block</span><span class="p">,</span> <span class="n">prev_block</span><span class="p">):</span>
+                    <span class="k">return</span> <span class="kc">False</span>
+
+        <span class="k">return</span> <span class="kc">True</span></div>
+</div>
+
+</pre></div>
+
+          </div>
+          
+        </div>
+      </div>
+      <div class="sphinxsidebar" role="navigation" aria-label="Main">
+        <div class="sphinxsidebarwrapper">
+<h1 class="logo"><a href="../index.html">Mini Blockchain</a></h1>
+
+
+
+
+
+
+
+
+
+<search id="searchbox" style="display: none" role="search">
+    <div class="searchformwrapper">
+    <form class="search" action="../search.html" method="get">
+      <input type="text" name="q" aria-labelledby="searchlabel" autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" placeholder="Search"/>
+      <input type="submit" value="Ir" />
+    </form>
+    </div>
+</search>
+<script>document.getElementById('searchbox').style.display = "block"</script><h3>Navegação</h3>
+<p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul>
+<li class="toctree-l1"><a class="reference internal" href="../models/modules.html">models</a></li>
+</ul>
+
+<div class="relations">
+<h3>Related Topics</h3>
+<ul>
+  <li><a href="../index.html">Documentation overview</a><ul>
+  <li><a href="index.html">Código do módulo</a><ul>
+  </ul></li>
+  </ul></li>
+</ul>
+</div>
+
+
+
+
+
+
+
+
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="footer">
+      &#169;2025, Andre Grassi, Ricardo Faria.
+      
+      |
+      Powered by <a href="https://www.sphinx-doc.org/">Sphinx 8.2.3</a>
+      &amp; <a href="https://alabaster.readthedocs.io">Alabaster 1.0.0</a>
+      
+    </div>
+
+    
+
+    
+  </body>
+</html>

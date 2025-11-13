@@ -1,7 +1,2 @@
-build
 __pycache__
 .venv
-*egg-info
-docs/_static
-docs/_templates
-docs/models

@@ -1,0 +1,7 @@
+hash module
+===========
+
+.. automodule:: hash
+   :members:
+   :show-inheritance:
+   :undoc-members:
