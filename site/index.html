@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Mini Blockchain — Relatório Técnico Interativo</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header>
+    <h1>Mini Blockchain — Relatório Técnico</h1>
+    <div class="small">Ricardo Prado Faria &amp; André Grassi — Disciplina: <strong>Redes de Computadores 2</strong></div>
+  </header>
+
+  <main>
+    <section>
+      <h2>📄 Resumo e Objetivo</h2>
+      <p>Este trabalho tem por objetivo <strong>simular</strong> o fluxo da interação entre cliente e servidor de um serviço de <strong>moedas virtuais baseadas em blockchain</strong>. Vale destacar que o trabalho possibilita o atendimento a <strong>mais de um cliente</strong>.</p>
+    </section>
+
+    <section>
+      <h2>🗓️ Cronograma e Metodologia de Desenvolvimento</h2>
+      <p id="progress-report">
+        O desenvolvimento da Mini Blockchain ocorreu ao longo de um período de três semanas, iniciando-se aproximadamente em 23 de Outubro de 2025. O trabalho foi conduzido em parceria e baseado em reuniões virtuais periódicas para alinhamento e integração contínua.
+
+        <p><strong>Fase 1: Planejamento e Arquitetura (Aprox. 23/10 a 29/10)</strong></p>
+        <p>A fase inicial foi dedicada ao planejamento. Estabelecemos a linguagem de programação principal, <strong>Python</strong>, e definimos a arquitetura da aplicação. Utilizamos a <strong>Linguagem de Modelagem Unificada (UML)</strong> para documentar a estrutura do projeto. Nesse período, foram criados os <strong>Diagramas de Classes e de Atividade</strong> (disponíveis na seção "Arquitetura & Diagramas"), fundamentais para a divisão das tarefas:</p>
+        <ul>
+            <li><strong>André: conexão Cliente-Servidor</strong>, sistema de comunicação da rede e Desenvolvimento dos <strong>modelos de dados </strong>.</li>
+            <li><strong>Ricardo:</strong> lógica de <strong>transações e validação </strong> da blockchain.</li>
+        </ul>
+
+        <p><strong>Fase 2: Desenvolvimento e Implementação (Aprox. 30/10 a 06/11)</strong></p>
+        <p>A segunda semana focou na implementação paralela dos módulos. Enquanto a camada de rede e o entrypoint do servidor (<code class="tag">run_server.py</code>) eram estabelecidos, a codificação do <strong>modelo de bloco</strong> (<code class="tag">block.py</code>) e da <strong>lógica de tratamento de transações</strong> (<code class="tag">transaction_handler.py</code>) ocorria em paralelo. Reuniões intermediárias garantiram que os módulos de comunicação e de lógica da blockchain pudessem ser integrados sem conflitos, focando na correta serialização e desserialização dos dados.</p>
+
+        <p><strong>Fase 3: Testes, Validação e Documentação (Aprox. 07/11 a 13/11)</strong></p>
+        <p>A fase final foi crucial para a <strong>validação exaustiva</strong> do sistema. Desenvolvemos scripts de testes focados em simular múltiplas transações válidas e inválidas, além de forçar o processo de mineração. Isso gerou os <strong>logs de execução</strong> presentes neste relatório. Por fim, o esforço se concentrou na criação deste <strong>Relatório Interativo em formato de website</strong>, utilizando HTML/CSS, para organizar e apresentar o código, diagramas e as evidências de funcionamento (logs) de forma clara e acessível, cumprindo integralmente os requisitos de documentação do professor.</p>
+      </p>
+    </section>
+
+    <section>
+      <h2>📐 Arquitetura e Diagramas</h2>
+      <p class="meta">Os diagramas de projeto foram gerados utilizando ferramentas UML e estão localizados em <code class="tag">docs/uml/</code>.</p>
+
+      <div class="row">
+        <div class="card">
+          <h3>Diagrama de Classes</h3>
+          <a href="imgs/class_diagram.png" target="_blank">
+            <img src="imgs/class_diagram.png" alt="Diagrama de classes da mini blockchain" class="diagram">
+          </a>
+        </div>
+        <div class="card">
+          <h3>Fluxo do Cliente</h3>
+          <a href="imgs/client/Activity Diagram.png" target="_blank">
+            <img src="imgs/client/Activity Diagram.png" alt="Diagrama de atividade do cliente" class="diagram">
+          </a>
+        </div>
+        <div class="card">
+          <h3>Diagrama de Atividade (Servidor)</h3>
+          <a href="imgs/client/Activity Diagram.png" target="_blank">
+            <img src="imgs/server/Activity Diagram.png" alt="Diagrama de atividade do servidor" class="diagram">
+          </a>
+        </div>
+        <div class="card">
+          <h3>Validação de Retirada</h3>
+          <a href="imgs/client/Activity Diagram.png" target="_blank">
+              <img src="imgs/server/ValidateWithdrawal.png" alt="Diagrama de validação de retirada no servidor" class="diagram">
+          </a>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>💻 Implementação — Código Fonte</h2>
+      <p class="meta">Os arquivos de código fonte, entregues no formato <code class="tag">.txt</code> para visualização, estão listados abaixo:</p>
+      <ul class="file-list">
+        <li><a class="link" href="codigo/run_server.py.txt" target="_blank">run_server.py.txt</a> — <strong>Entrypoint</strong> principal do servidor</li>
+        <li><a class="link" href="codigo/run_client.py.txt" target="_blank">run_client.py.txt</a> — Script para <strong>envio de transações</strong> (cliente)</li>
+        <li><a class="link" href="codigo/block.py.txt" target="_blank">block.py.txt</a> — <strong>Modelo de Bloco</strong> (estrutura de dados)</li>
+        <li><a class="link" href="codigo/transaction_handler.py.txt" target="_blank">transaction_handler.py.txt</a> — Lógica para <strong>manipulação e validação de transações</strong></li>
+      </ul>
+    </section>
+
+    <section>
+      <h2>📊 Logs de Execução (Exemplos)</h2>
+      <p class="meta">Abaixo estão previews dos logs de execução do servidor e do cliente. Arquivos completos em <code class="tag">site/logs/</code>.</p>
+
+      <div class="row">
+        <div class="card">
+          <h3>Log Servidor (Preview)</h3>
+          <pre id="log-server">Carregando log do servidor...</pre>
+          <div class="log-link-container"><a class="button-link" href="logs/execucao_servidor.log" target="_blank">Abrir Log Completo</a></div>
+        </div>
+
+        <div class="card">
+          <h3>Log Cliente (Preview)</h3>
+          <pre id="log-client">Carregando log do cliente...</pre>
+          <div class="log-link-container"><a class="button-link" href="logs/execucao_cliente.log" target="_blank">Abrir Log Completo</a></div>
+        </div>
+      </div>
+    </section>
+
+    <section>
+      <h2>✅ Testes Realizados e Evidências</h2>
+      <p>Os principais cenários de teste validados no projeto incluem:</p>
+      <ol>
+        <li><strong>Envio de Transação Válida:</strong> Verificação da aceitação pela <code class="tag">mempool</code> (vide logs).</li>
+        <li><strong>Validação de Saque:</strong> Teste do fluxo completo de operação de retirada (detalhes no diagrama <code class="tag">server/ValidateWithdrawal</code>).</li>
+        <li><strong>Mineração / Criação de Bloco:</strong> Acompanhamento da criação de um bloco simples (mostrada no log de servidor).</li>
+        <li><strong>Casos Inválidos:</strong> Teste de entradas faltantes, que resultam no erro <strong>HTTP 400</strong> (descrição no relatório anexo).</li>
+      </ol>
+      
+      <div class="row">
+        <div class="card">
+          <h3>Log de Testes Gerais (Preview)</h3>
+          <pre id="log-tests">Carregando log de testes...</pre>
+          <div class="log-link-container"><a class="button-link" href="logs/testes.log" target="_blank">Abrir Log de Testes</a></div>
+        </div>
+        <div class="card">
+          <h3>Screenshots de Evidências</h3>
+          <a href="imgs/server/Activity Diagram.png" target="_blank">
+            <img src="imgs/server/Activity Diagram.png" alt="Screenshots dos testes" class="diagram">
+          </a>
+        </div>
+      </div>
+      <p class="small">Screenshots e resultados completos dos testes estão disponíveis nas pastas <code class="tag">site/imgs/</code> e <code class="tag">site/logs/</code>.</p>
+    </section>
+
+  </main>
+
+  <footer>
+    <p><strong>Universidade Federal do Paraná - Curitiba</strong></p>
+  </footer>
+
+  <script>
+    // Script simples pra carregar previews de logs
+    function loadText(path, elementId){
+      fetch(path).then(r => {
+        if (!r.ok) throw new Error("no file");
+        return r.text();
+      }).then(t => {
+        document.getElementById(elementId).textContent = t.slice(0, 4000); // preview limt 4000 chars
+      }).catch(e => {
+        document.getElementById(elementId).textContent = `(arquivo não encontrado: ${path})`;
+      });
+    }
+    loadText('logs/execucao_servidor.log','log-server');
+    loadText('logs/execucao_cliente.log','log-client');
+    loadText('logs/testes.log','log-tests');
+  </script>
+</body>
+</html>

@@ -1,0 +1,237 @@
+/* ---------------------------------- */
+/* VARIÁVEIS DE COR E TEMA */
+/* ---------------------------------- */
+:root {
+  --color-primary: #0077c2; /* Azul vibrante */
+  --color-primary-dark: #005691;
+  --color-header-bg: #1f2937; /* Cinza escuro */
+  --color-text-dark: #111827; /* Texto principal escuro */
+  --color-text-light: #f9fafb;
+  --color-background: #f8f9fa; /* Fundo leve */
+  --color-card-bg: #ffffff;
+  --color-code-bg: #111827; /* Fundo preto para código */
+  --color-code-text: #e5e7eb;
+  --color-subtle-text: #6b7280;
+}
+
+/* ---------------------------------- */
+/* ESTILOS GLOBAIS E REINICIALIZAÇÃO */
+/* ---------------------------------- */
+body {
+  font-family: 'Inter', 'Segoe UI', 'Arial', sans-serif;
+  background: var(--color-background);
+  color: var(--color-text-dark);
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* ---------------------------------- */
+/* CABEÇALHO E RODAPÉ */
+/* ---------------------------------- */
+header, footer {
+  text-align: center;
+  padding: 1.5rem 1rem;
+  background: var(--color-header-bg);
+  color: var(--color-text-light);
+}
+
+header h1 {
+  margin-bottom: 0.25rem;
+  font-size: 2.2rem;
+}
+
+header .small {
+  font-size: 1rem;
+  opacity: 0.8;
+  color: var(--color-text-light); 
+}
+
+/* ---------------------------------- */
+/* CONTEÚDO PRINCIPAL E SEÇÕES */
+/* ---------------------------------- */
+main {
+  max-width: 1000px;
+  margin: 2rem auto;
+  padding: 0 1rem;
+}
+
+section {
+  background: var(--color-card-bg);
+  border-radius: 12px;
+  padding: 2rem;
+  margin-bottom: 2rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.08);
+  border-left: 5px solid var(--color-primary);
+}
+
+h1, h2, h3 {
+  margin: 0 0 1rem 0;
+  color: var(--color-text-dark);
+}
+
+h2 {
+  font-size: 1.8rem;
+  border-bottom: 2px solid #e5e7eb;
+  padding-bottom: 0.5rem;
+  margin-bottom: 1.5rem;
+}
+
+/* ---------------------------------- */
+/* LAYOUT E CARTÕES (DIAGRAMAS/LOGS) */
+/* ---------------------------------- */
+.row {
+  display: flex;
+  gap: 2rem;
+  flex-wrap: wrap;
+}
+
+.card {
+  flex: 1;
+  min-width: 250px;
+  padding: 1rem;
+  border-radius: 8px;
+  border: 1px solid #e5e7eb;
+}
+
+.card h3 {
+    margin-top: 0;
+    margin-bottom: 0.75rem;
+    font-size: 1.25rem;
+}
+
+img.diagram {
+  width: 100%;
+  /* 🖼️ ALTERAÇÃO: Define uma altura fixa para todas as imagens */
+  height: 200px; /* Você pode ajustar este valor (ex: 250px) */
+  /* 🖼️ ALTERAÇÃO: Garante que a imagem se ajuste dentro da altura sem cortar */
+  object-fit: contain; 
+  /* Adiciona um fundo branco no caso de object-fit: contain e a imagem ser transparente/menor */
+  background-color: #f9fafb; 
+  
+  border-radius: 6px;
+  border: 1px solid #e5e7eb;
+  margin-bottom: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+img.diagram:hover {
+    transform: scale(1.02);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+/* ---------------------------------- */
+/* ELEMENTOS DE CÓDIGO E TEXTO */
+/* ---------------------------------- */
+pre {
+  background: var(--color-code-bg);
+  color: var(--color-code-text);
+  padding: 1rem;
+  border-radius: 8px;
+  overflow: auto;
+  max-height: 400px;
+  font-size: 0.95rem;
+  border: 1px solid #374151;
+}
+
+code.tag {
+  background: #e0f2ff;
+  color: var(--color-primary-dark);
+  padding: .2rem .45rem;
+  border-radius: 6px;
+  font-weight: 600;
+}
+
+/* ---------------------------------- */
+/* LISTAS E LINKS */
+/* ---------------------------------- */
+a.link {
+  color: var(--color-primary);
+  text-decoration: none;
+  font-weight: 500;
+  transition: color 0.2s;
+}
+
+a.link:hover {
+    color: var(--color-primary-dark);
+    text-decoration: underline;
+}
+
+.small {
+  font-size: .95rem;
+  color: var(--color-subtle-text);
+}
+
+.meta {
+  font-size: .9rem;
+  color: var(--color-subtle-text);
+  margin-bottom: 1rem;
+  font-style: italic;
+  border-left: 3px solid var(--color-primary);
+  padding-left: 10px;
+}
+
+.file-list {
+  list-style: none;
+  padding-left: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1rem;
+}
+
+.file-list li {
+  padding: .5rem 0;
+  background: #f1f5f9;
+  border-radius: 6px;
+  padding: 0.75rem 1rem;
+}
+
+.file-list a {
+    display: block;
+    font-weight: 600;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* Estilo para links que parecem botões, como em "Abrir arquivo completo" */
+.button-link {
+    display: inline-block;
+    background-color: var(--color-primary);
+    color: #fff !important;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    text-decoration: none !important;
+    margin-top: 0.5rem;
+    font-weight: 600;
+    transition: background-color 0.2s;
+    font-size: 0.9rem;
+}
+
+.button-link:hover {
+    background-color: var(--color-primary-dark);
+    text-decoration: none !important;
+}
+
+/* Ajuste para o .small que contém o link do log */
+.log-link-container {
+    margin-top: 0.5rem;
+    padding-top: 0.5rem;
+    border-top: 1px dashed #e5e7eb;
+}
+
+/* Responsividade básica para telas menores */
+@media (max-width: 768px) {
+    .row {
+        gap: 1.5rem;
+    }
+    .card {
+        min-width: 100%;
+    }
+    section {
+        padding: 1.5rem;
+    }
+    /* Adapta a altura da imagem para telas menores, se necessário */
+    img.diagram {
+        height: 150px; 
+    }
+}
