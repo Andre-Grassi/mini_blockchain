@@ -33,8 +33,12 @@ class NetworkNode:
 
     def close(self):
         self.socket.close()
-    
+
     def terminate(self):
+        """Terminates the socket connection gracefully.
+
+        Calls shutdown and close on the socket and handles potential exceptions.
+        """
         try:
             self.socket.shutdown(socket.SHUT_RDWR)
         except OSError:
