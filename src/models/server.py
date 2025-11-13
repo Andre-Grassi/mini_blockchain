@@ -41,7 +41,14 @@ class Server(NetworkNode):
     # Executed in an new thread
     def answer_client(
         self, connection: socket, lock: threading.Lock, shutdown_event: threading.Event
-    ):
+    ) -> None:
+        """Handles the communication with a client.
+
+        Args:
+            connection (socket): The socket connected to the client.
+            lock (threading.Lock): Lock to protect shared state.
+            shutdown_event (threading.Event): Event to signal shutdown.
+        """
         # Keep the connection alive, exchanging messages, until it's closed
         is_open = True
         client_name = None
@@ -117,6 +124,13 @@ class Server(NetworkNode):
         connection.close()
 
     def _get_own_ip(self) -> str:
+        """Gets the local IP address of the server.
+
+        Connects to an external IP with UDP to determine the local IP.
+
+        Returns:
+            str: The local IP address. If it fails, returns None.
+        """
         aux_socket = None
         try:
             # Create a UDP socket
