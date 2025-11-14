@@ -77,9 +77,9 @@ class Server(NetworkNode):
                 print("\n", end="")
 
                 if client_name is not None:
-                    print(f"received data from {client_name}: {message}")
+                    print(f"Received from {client_name}: {message}")
                 else:
-                    print(f"received data from unknown client: {message}")
+                    print(f"Received from unknown client: {message}")
 
                 (operation, op_data) = self.parse_message(message)
 
