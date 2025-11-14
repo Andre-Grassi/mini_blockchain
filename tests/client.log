@@ -1,0 +1,56 @@
+[client_correct] My IP: 10.254.223.30
+[client_correct] Connecting to server 10.254.223.29 on port 8083
+[client_correct] Sending: deposit 10
+[client_correct] Received: ok
+
+[client_correct] Sending: deposit 100
+[client_correct] Received: ok
+
+[client_correct] Sending: withdraw 100
+[client_correct] Received: ok
+
+[client_correct] Sending: withdraw 10
+[client_correct] Received: ok
+
+[client_correct] Sending: q
+[client_correct] Received: Server shutting down connection.
+
+[client_incorrect] My IP: 10.254.223.30
+[client_incorrect] Connecting to server 10.254.223.29 on port 8083
+[client_incorrect] Sending: deposit 100000
+[client_incorrect] Received: ok
+
+[client_incorrect] Sending: withdraw 99999999
+[client_incorrect] Received: Can't withdraw more money than the current balance amount
+
+[client_incorrect] Sending: withdraw 10
+[client_incorrect] Received: ok
+
+[client_incorrect] Sending: q
+[client_incorrect] Received: Server shutting down connection.
+
+[client_incorrect_2] My IP: 10.254.223.30
+[client_incorrect_2] Connecting to server 10.254.223.29 on port 8083
+[client_incorrect_2] Sending: withdraw 99999999
+[client_incorrect_2] Received: Can't withdraw more money than the current balance amount
+
+[client_incorrect_2] Sending: q
+[client_incorrect_2] Received: Server shutting down connection.
+
+[client_unknown] My IP: 10.254.223.30
+[client_unknown] Connecting to server 10.254.223.29 on port 8083
+[client_unknown] Sending: esses são comandos desconhecidos
+[client_unknown] Received: Unknow operation.
+
+[client_unknown] Sending: o servidor não fará nada
+[client_unknown] Received: Unknow operation.
+
+[client_unknown] Sending: agora digitarei q apenas para sair graciosamente
+[client_unknown] Received: Unknow operation.
+
+[client_unknown] Sending: mas se o user fizesse ctrl+c não ocorreria erro
+[client_unknown] Received: Unknow operation.
+
+[client_unknown] Sending: q
+[client_unknown] Received: Server shutting down connection.
+
