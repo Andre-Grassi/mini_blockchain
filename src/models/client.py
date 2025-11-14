@@ -10,12 +10,14 @@ class Client(NetworkNode):
 
     Attributes:
         name (str): Identification of the client.
+        ip (str): IP address of the client.
     """
 
     def __init__(self, name: str):
         super().__init__()
 
         self.name = name
+        self.ip = self._get_own_ip()
 
     def connect_to(self, server_ip: str, server_port: int):
         """Connects the client to the server.
