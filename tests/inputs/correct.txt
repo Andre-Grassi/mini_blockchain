@@ -1,0 +1,5 @@
+deposit 10
+deposit 100
+withdraw 100
+withdraw 10
+q

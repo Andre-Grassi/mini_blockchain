@@ -1,0 +1,5 @@
+esses são comandos desconhecidos
+o servidor não fará nada
+agora digitarei q apenas para sair graciosamente
+mas se o user fizesse ctrl+c não ocorreria erro
+q
