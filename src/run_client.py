@@ -40,7 +40,8 @@ def main(client_name: str, server_ip: str, server_port: int, client_input=sys.st
 
     client = Client(client_name)
 
-    print("")
+    print("My IP:", client.ip)
+    print("Connecting to server", server_ip, "on port", server_port)
 
     client.connect_to(server_ip, server_port)
     connection = client.socket
