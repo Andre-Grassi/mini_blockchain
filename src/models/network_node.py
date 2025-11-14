@@ -24,7 +24,7 @@ class NetworkNode:
 
     def __init__(self, buffer_size: Optional[int] = BUFFER_SIZE):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.buffer_size = buffer_size  # OPTIMIZE useless?
+        self.buffer_size = buffer_size
 
     def send_str(self, connection: socket.socket, message: str):
         message += "\n"  # Used as delimiter
@@ -75,8 +75,7 @@ class NetworkNode:
         action = parts[0].lower()
 
         # Check if the action is recognizable
-        # UGLY hardcoded actions strings
-        if action not in ("deposit", "withdraw", "name", "q"):
+        if action not in (Operation.DEPOSIT.value, Operation.WITHDRAW.value, Operation.NAME.value, Operation.QUIT.value):
             return (None, None)
 
         if action == Operation.QUIT.value:
