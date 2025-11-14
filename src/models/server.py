@@ -58,7 +58,7 @@ class Server(NetworkNode):
             connection.settimeout(1.0)
 
             try:
-                message_bytes = connection.recv(self.buffer_size)
+                messages_bytes = connection.recv(self.buffer_size)
             except TimeoutError:
                 # Timeout to check shutdown_event
                 continue
@@ -66,53 +66,60 @@ class Server(NetworkNode):
                 # Connection error
                 break
 
-            if not message_bytes:
+            if not messages_bytes:
                 break  # Connection was closed
 
-            message = message_bytes.decode()
+            messages = messages_bytes.decode()
+            for message in messages.split("\n"):
+                if message.strip() == "":
+                    continue  # Ignore empty messages
 
-            print(f"received data: {message}")
+                print(f"received data: {message}")
 
-            (operation, op_data) = self.parse_message(message)
+                (operation, op_data) = self.parse_message(message)
 
-            if operation is None:
-                self.send_str(connection, "Unknow operation.")
-            elif operation == Operation.QUIT:
-                is_open = False
-            # Cannot proceed until name is registered
-            elif client_name is None:
-                if operation == Operation.NAME:
-                    if op_data is not None:
-                        client_name = op_data
-                        if op_data not in self.client_ids:
-                            self.client_ids.append(client_name)
+                if operation is None:
+                    self.send_str(connection, "Unknow operation.")
+                elif operation == Operation.QUIT:
+                    is_open = False
+                # Cannot proceed until name is registered
+                elif client_name is None:
+                    if operation == Operation.NAME:
+                        if op_data is not None:
+                            client_name = op_data
+                            if op_data not in self.client_ids:
+                                self.client_ids.append(client_name)
+                        else:
+                            self.send_str(
+                                connection, "First, send your name: name <your_name>"
+                            )
                     else:
                         self.send_str(
                             connection, "First, send your name: name <your_name>"
                         )
+
+                # Money operations
+                elif operation == Operation.DEPOSIT or operation == Operation.WITHDRAW:
+                    with lock:
+                        (is_transaction_valid, status) = (
+                            Transaction.execute_transaction(
+                                self, client_name, op_data, operation
+                            )
+                        )
+
+                        is_blockchain_valid = False
+                        if is_transaction_valid:
+                            is_blockchain_valid = Hash.validate_blockchain_hash(self)
+
+                            if not is_blockchain_valid:
+                                self.block_chain.pop()  # Pop last invalid block
+                                status = "Corrupted block's hash"
+
+                        self.send_str(connection, status)
                 else:
-                    self.send_str(connection, "First, send your name: name <your_name>")
+                    raise RuntimeError("Unknown error")
 
-            # Money operations
-            elif operation == Operation.DEPOSIT or operation == Operation.WITHDRAW:
-                with lock:
-                    (is_transaction_valid, status) = Transaction.execute_transaction(
-                        self, client_name, op_data, operation
-                    )
-
-                    is_blockchain_valid = False
-                    if is_transaction_valid:
-                        is_blockchain_valid = Hash.validate_blockchain_hash(self)
-
-                        if not is_blockchain_valid:
-                            self.block_chain.pop()  # Pop last invalid block
-                            status = "Corrupted block's hash"
-
-                    self.send_str(connection, status)
-            else:
-                raise RuntimeError("Unknown error")
-
-            print(f"Blockchain: {self.block_chain}")
+                print(f"Blockchain: {self.block_chain}")
 
         print("Closing connection with client " + client_name)
         self.send_str(connection, "Server shutting down connection.")
