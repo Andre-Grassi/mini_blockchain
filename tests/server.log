@@ -1,0 +1,146 @@
+Starting Mini Blockchain Server...
+Server IP: 192.168.1.242
+Server listening on 192.168.1.242:8085
+Accepted connection from ('192.168.1.1', 38750)
+
+Received from unknown client: name CLIENT_unknown
+Blockchain:
+	empty
+
+Received from CLIENT_unknown: esses são comandos desconhecidos
+Sending: Unknow operation.
+Blockchain:
+	empty
+
+Received from CLIENT_unknown: o servidor não fará nada
+Sending: Unknow operation.
+Blockchain:
+	empty
+
+Received from CLIENT_unknown: agora digitarei q apenas para sair graciosamente
+Sending: Unknow operation.
+Blockchain:
+	empty
+
+Received from CLIENT_unknown: mas se o user fizesse ctrl+c não ocorreria erro
+Sending: Unknow operation.
+Blockchain:
+	empty
+
+Received from CLIENT_unknown: q
+Blockchain:
+	empty
+Closing connection with client CLIENT_unknown
+Accepted connection from ('192.168.1.1', 38752)
+
+Received from unknown client: name CLIENT_correct
+Blockchain:
+	empty
+
+Received from CLIENT_correct: deposit 10
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+
+Received from CLIENT_correct: deposit 100
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+
+Received from CLIENT_correct: withdraw 100
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+
+Received from CLIENT_correct: withdraw 10
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+
+Received from CLIENT_correct: q
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+Closing connection with client CLIENT_correct
+Accepted connection from ('192.168.1.1', 38766)
+
+Received from unknown client: name CLIENT_incorrect_withdraw2
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+
+Received from CLIENT_incorrect_withdraw2: withdraw 99999999
+Sending: Can't withdraw more money than the current balance amount
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+
+Received from CLIENT_incorrect_withdraw2: q
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+Closing connection with client CLIENT_incorrect_withdraw2
+Accepted connection from ('192.168.1.1', 38782)
+
+Received from unknown client: name CLIENT_incorrect_withdraw
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+
+Received from CLIENT_incorrect_withdraw: deposit 100000
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+	4: Creation Block CLIENT_incorrect_withdraw 2025-11-14 02:52:43 100000.0 hash=833
+
+Received from CLIENT_incorrect_withdraw: withdraw 99999999
+Sending: Can't withdraw more money than the current balance amount
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+	4: Creation Block CLIENT_incorrect_withdraw 2025-11-14 02:52:43 100000.0 hash=833
+
+Received from CLIENT_incorrect_withdraw: withdraw 10
+Sending: ok
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+	4: Creation Block CLIENT_incorrect_withdraw 2025-11-14 02:52:43 100000.0 hash=833
+	5: Block CLIENT_incorrect_withdraw withdraw 10.0 hash=e1c
+
+Received from CLIENT_incorrect_withdraw: q
+Blockchain:
+	0: Creation Block CLIENT_correct 2025-11-14 02:52:43 10.0 hash=c41
+	1: Block CLIENT_correct deposit 100.0 hash=731
+	2: Block CLIENT_correct withdraw 100.0 hash=57c
+	3: Block CLIENT_correct withdraw 10.0 hash=ee3
+	4: Creation Block CLIENT_incorrect_withdraw 2025-11-14 02:52:43 100000.0 hash=833
+	5: Block CLIENT_incorrect_withdraw withdraw 10.0 hash=e1c
+Closing connection with client CLIENT_incorrect_withdraw
+
+SIGINT received, shutting down...
+Waiting for client threads to finish...
+Server stopped
