@@ -1,9 +1,14 @@
 #!/usr/bin/python3
+"""Entry point for the blockchain server application.
 
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+Creates a TCP server that listens for client connections, processes
+client operations and blockchain transactions (deposits/withdrawals),
+and manages the blockchain state. Supports graceful shutdown via signal
+handlers and multi-threaded client handling.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import argparse
 import threading

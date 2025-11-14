@@ -1,7 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""Operation enumeration for blockchain transactions.
+
+Defines the types of operations clients can perform: DEPOSIT (add minicoins),
+WITHDRAW (remove minicoins), NAME (register client identity), and QUIT
+(close connection). Used for message parsing and transaction validation.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from enum import Enum
 

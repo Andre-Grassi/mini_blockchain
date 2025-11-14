@@ -1,8 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""Base class for network nodes in the blockchain system.
 
+Provides common TCP socket functionality for both server and client nodes,
+including message sending/receiving with newline delimiters, message parsing,
+and network utilities. Serves as the foundation for Server and Client classes.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import socket
 from typing import Optional
@@ -75,7 +79,12 @@ class NetworkNode:
         action = parts[0].lower()
 
         # Check if the action is recognizable
-        if action not in (Operation.DEPOSIT.value, Operation.WITHDRAW.value, Operation.NAME.value, Operation.QUIT.value):
+        if action not in (
+            Operation.DEPOSIT.value,
+            Operation.WITHDRAW.value,
+            Operation.NAME.value,
+            Operation.QUIT.value,
+        ):
             return (None, None)
 
         if action == Operation.QUIT.value:

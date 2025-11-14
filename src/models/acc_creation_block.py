@@ -1,7 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""AccCreationBlock class for account creation transactions.
+
+A specialized Block subclass that represents the first deposit of a new client,
+which effectively creates their account. Stores the account creation timestamp
+in addition to standard block fields. Always represents a deposit operation.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from typing import Optional
 from datetime import datetime

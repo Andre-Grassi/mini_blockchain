@@ -1,7 +1,14 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""Server class for the blockchain network.
+
+Manages the blockchain state, accepts client connections, processes client operations,
+transaction requests (deposits/withdrawals), validates blockchain integrity,
+and handles concurrent client sessions using threading.
+Each client connection runs in a separate thread with shared state protected
+by locks.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import socket
 from typing import List

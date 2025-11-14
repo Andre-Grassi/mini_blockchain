@@ -1,9 +1,14 @@
 #!/usr/bin/python3
+"""Entry point for the blockchain client application.
 
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+Connects to a blockchain server via TCP and allows users to perform operations
+(name registration, deposits, withdrawals). Supports both interactive mode
+(stdin) and automated mode (file input). Uses a separate thread for user input
+to allow concurrent message reception from the server.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import argparse
 import sys

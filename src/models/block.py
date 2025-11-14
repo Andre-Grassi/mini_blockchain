@@ -1,7 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""Block class representing a single record in the blockchain.
+
+Each block stores transaction information (owner, amount, operation type) and
+a cryptographic hash linking it to the previous block. Provides serialization
+methods for computing hashes and maintaining blockchain integrity.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import json
 from typing import Optional

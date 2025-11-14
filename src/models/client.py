@@ -1,7 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-# Last Modified: Nov. 14 2025
-#
+"""Client class for the blockchain network.
+
+Extends NetworkNode to provide client-specific functionality for connecting
+to the blockchain server. Clients can perform operations like name registration,
+deposits, and withdrawals by communicating with the server over TCP.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from models.network_node import NetworkNode
 
