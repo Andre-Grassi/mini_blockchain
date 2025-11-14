@@ -18,7 +18,9 @@ import os
 def input_thread(input_queue: Queue, shutdown_event: threading.Event):
     """Thread to read user input without blocking main loop."""
 
-    print("Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n")
+    __builtins__.print(
+        "Usage:\n\t- deposit <amount>\n\t- withdraw <amount>\n\t- q to quit\n"
+    )
 
     while not shutdown_event.is_set():
         try:
@@ -32,7 +34,14 @@ def input_thread(input_queue: Queue, shutdown_event: threading.Event):
 
 
 def main(client_name: str, server_ip: str, server_port: int, client_input=sys.stdin):
+    # Override print to add client name prefix
+    def print(*args, **kwargs):
+        __builtins__.print(f"[{client_name}]", *args, **kwargs)
+
     client = Client(client_name)
+
+    print("")
+
     client.connect_to(server_ip, server_port)
     connection = client.socket
 
@@ -106,7 +115,7 @@ def main(client_name: str, server_ip: str, server_port: int, client_input=sys.st
 
                 recv_message = recv_message_b.decode()
 
-                print(f"received data: {recv_message}")
+                print(f"Received: {recv_message}")
 
             except socket.timeout:
                 continue  # Normal execution
@@ -116,8 +125,11 @@ def main(client_name: str, server_ip: str, server_port: int, client_input=sys.st
 
     client.terminate()
 
-    # Check if it's main thread to avoid issues in tests
-    if threading.current_thread() == threading.main_thread():
+    # Check if it's main thread and input is stdin to avoid issues in automated runs
+    if (
+        threading.current_thread() == threading.main_thread()
+        and client_input == sys.stdin
+    ):
         os._exit(0)  # Force exit, because input_thread is blocked by input function
 
 
