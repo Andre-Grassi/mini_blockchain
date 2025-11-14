@@ -83,6 +83,9 @@ def main(client_name: str, server_ip: str, server_port: int, client_input=sys.st
                 message = input_queue.get_nowait()
 
                 (action, _) = client.parse_message(message)
+
+                print("Sending:", message)
+
                 client.send_str(connection, message)
 
                 if action is not None and action == Operation.QUIT.value:
