@@ -1,0 +1,11 @@
+{
+  "emeraldwalk.runonsave": {
+    "commands": [
+      {
+        // Run whenever Python files are saved
+        "match": "\\.(py)$",
+        "cmd": "./rsync.sh"
+      }
+    ]
+  }
+}

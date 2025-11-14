@@ -5,6 +5,7 @@
 #
 
 import argparse
+import sys
 from models.client import Client
 from models.operation import Operation
 import signal
@@ -30,7 +31,7 @@ def input_thread(input_queue: Queue, shutdown_event: threading.Event):
             break
 
 
-def main(client_name: str, server_ip: str, server_port: int):
+def main(client_name: str, server_ip: str, server_port: int, client_input=sys.stdin):
     client = Client(client_name)
     client.connect_to(server_ip, server_port)
     connection = client.socket
@@ -44,6 +45,11 @@ def main(client_name: str, server_ip: str, server_port: int):
     shutdown_event = threading.Event()
     input_queue = Queue()
 
+    if client_input != sys.stdin:
+        for operation in client_input:
+            input_queue.put(operation)
+        # No need for input thread in this case
+
     def signal_handler(signum, frame):
         """Handle shutdown signals gracefully."""
 
@@ -53,18 +59,23 @@ def main(client_name: str, server_ip: str, server_port: int):
         shutdown_event.set()
 
     # Register signal handlers
-    signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
-    signal.signal(signal.SIGTERM, signal_handler)  # Terminate signal
-    signal.signal(signal.SIGHUP, signal_handler)  # Hangup signal
+    try:
+        signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
+        signal.signal(signal.SIGTERM, signal_handler)  # Terminate signal
+        signal.signal(signal.SIGHUP, signal_handler)  # Hangup signal
+    except ValueError:
+        # Signals can only be registered in main thread
+        print("Warning: Signal handlers not registered (not in main thread)")
 
-    # Start input thread
-    input_thread_obj = threading.Thread(
-        target=input_thread,
-        args=(input_queue, shutdown_event),
-        daemon=True,
-        name="InputThread",
-    )
-    input_thread_obj.start()
+    if client_input == sys.stdin:
+        # Start input thread
+        input_thread_obj = threading.Thread(
+            target=input_thread,
+            args=(input_queue, shutdown_event),
+            daemon=True,
+            name="InputThread",
+        )
+        input_thread_obj.start()
 
     try:
         while not shutdown_event.is_set():
@@ -72,6 +83,9 @@ def main(client_name: str, server_ip: str, server_port: int):
                 message = input_queue.get_nowait()
 
                 (action, _) = client.parse_message(message)
+
+                print("Sending:", message)
+
                 client.send_str(connection, message)
 
                 if action is not None and action == Operation.QUIT.value:
@@ -102,7 +116,9 @@ def main(client_name: str, server_ip: str, server_port: int):
 
     client.terminate()
 
-    os._exit(0)  # Force exit, because input_thread is blocked by input function
+    # Check if it's main thread to avoid issues in tests
+    if threading.current_thread() == threading.main_thread():
+        os._exit(0)  # Force exit, because input_thread is blocked by input function
 
 
 if __name__ == "__main__":
@@ -118,6 +134,18 @@ if __name__ == "__main__":
         "server_port", type=int, help="The port of the server to connect to."
     )
 
+    parser.add_argument(
+        "--input",
+        type=argparse.FileType("r"),
+        default=None,
+        help="File with operations to execute (default: stdin).",
+    )
+
     args = parser.parse_args()
 
-    main(args.client_name, args.server_ip, args.server_port)
+    if args.input:
+        client_input = args.input.read().strip().split("\n")
+    else:
+        client_input = sys.stdin
+
+    main(args.client_name, args.server_ip, args.server_port, client_input)

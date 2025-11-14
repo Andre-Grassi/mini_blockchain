@@ -1,0 +1,4 @@
+deposit 100000
+withdraw 99999999
+withdraw 10
+q

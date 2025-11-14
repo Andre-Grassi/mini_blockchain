@@ -41,9 +41,13 @@ def main(server_port: int):
         shutdown_event.set()
 
     # Register signal handlers
-    signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
-    signal.signal(signal.SIGTERM, signal_handler)  # Terminate signal
-    signal.signal(signal.SIGHUP, signal_handler)  # Hangup signal
+    try:
+        signal.signal(signal.SIGINT, signal_handler)  # Ctrl + C
+        signal.signal(signal.SIGTERM, signal_handler)  # Terminate signal
+        signal.signal(signal.SIGHUP, signal_handler)  # Hangup signal
+    except ValueError:
+        # Signals can only be registered in main thread
+        print("Warning: Signal handlers not registered (not in main thread)")
 
     # Main accept loop
     try:
@@ -103,6 +107,8 @@ if __name__ == "__main__":
         type=int,
         help="The port to run the server on",
     )
+
+    print("Starting Mini Blockchain Server...")
 
     args = parser.parse_args()
 

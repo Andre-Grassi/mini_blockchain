@@ -26,9 +26,11 @@ class NetworkNode:
         self.buffer_size = buffer_size  # OPTIMIZE useless?
 
     def send_str(self, connection: socket.socket, message: str):
+        message += "\n"  # Used as delimiter
         connection.sendall(message.encode("utf-8"))
 
     def send_bytes(self, connection: socket.socket, message: bytes):
+        message += b"\n"  # Used as delimiter
         connection.sendall(message)
 
     def close(self):

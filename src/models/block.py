@@ -54,6 +54,6 @@ class Block:
         if self.hash_b is None:
             hash_hex = "None"
         else:
-            hash_hex = self.hash_b.hex()
+            hash_hex = self.hash_b.hex()[:3]
 
-        return f"Block {self.owner_name} {self.operation} {self.amount}\n{hash_hex}"
+        return f"Block {self.owner_name} {self.operation.value} {self.amount} hash={hash_hex}"
