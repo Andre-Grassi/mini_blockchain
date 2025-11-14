@@ -15,7 +15,7 @@
 [client_correct] Sending: q
 [client_correct] Received: Server shutting down connection.
 
-[client_incorrect] My IP: 10.254.223.30
+[client_incorrect] My IP: 10.254.223.31
 [client_incorrect] Connecting to server 10.254.223.29 on port 8083
 [client_incorrect] Sending: deposit 100000
 [client_incorrect] Received: ok
@@ -29,7 +29,7 @@
 [client_incorrect] Sending: q
 [client_incorrect] Received: Server shutting down connection.
 
-[client_incorrect_2] My IP: 10.254.223.30
+[client_incorrect_2] My IP: 10.254.223.32
 [client_incorrect_2] Connecting to server 10.254.223.29 on port 8083
 [client_incorrect_2] Sending: withdraw 99999999
 [client_incorrect_2] Received: Can't withdraw more money than the current balance amount
@@ -37,7 +37,7 @@
 [client_incorrect_2] Sending: q
 [client_incorrect_2] Received: Server shutting down connection.
 
-[client_unknown] My IP: 10.254.223.30
+[client_unknown] My IP: 10.254.223.33
 [client_unknown] Connecting to server 10.254.223.29 on port 8083
 [client_unknown] Sending: esses são comandos desconhecidos
 [client_unknown] Received: Unknow operation.
@@ -53,4 +53,3 @@
 
 [client_unknown] Sending: q
 [client_unknown] Received: Server shutting down connection.
-
