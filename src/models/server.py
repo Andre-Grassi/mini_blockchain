@@ -119,7 +119,9 @@ class Server(NetworkNode):
                 else:
                     raise RuntimeError("Unknown error")
 
-                print(f"Blockchain: {self.block_chain}")
+                print("Blockchain:")
+                for i, block in enumerate(self.block_chain):
+                    print(f"\t{i}: {block}")
 
         print("Closing connection with client " + client_name)
         self.send_str(connection, "Server shutting down connection.")
