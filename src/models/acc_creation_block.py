@@ -31,7 +31,9 @@ class AccCreationBlock(Block):
         if self.hash_b is None:
             hash_hex = "None"
         else:
-            hash_hex = self.hash_b.hex()
+            hash_hex = self.hash_b.hex()[:3]
 
         date_str = self.date.strftime("%Y-%m-%d %H:%M:%S")
-        return f"Creation Block {self.owner_name} {date_str} {self.amount}\n{hash_hex}"
+        return (
+            f"Creation Block {self.owner_name} {date_str} {self.amount} hash={hash_hex}"
+        )
