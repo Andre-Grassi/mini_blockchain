@@ -74,11 +74,17 @@ class Server(NetworkNode):
                 if message.strip() == "":
                     continue  # Ignore empty messages
 
-                print(f"received data: {message}")
+                print("\n", end="")
+
+                if client_name is not None:
+                    print(f"received data from {client_name}: {message}")
+                else:
+                    print(f"received data from unknown client: {message}")
 
                 (operation, op_data) = self.parse_message(message)
 
                 if operation is None:
+                    print("Sending: Unknow operation.")
                     self.send_str(connection, "Unknow operation.")
                 elif operation == Operation.QUIT:
                     is_open = False
@@ -90,10 +96,12 @@ class Server(NetworkNode):
                             if op_data not in self.client_ids:
                                 self.client_ids.append(client_name)
                         else:
+                            print("Sending: First, send your name: name <your_name>")
                             self.send_str(
                                 connection, "First, send your name: name <your_name>"
                             )
                     else:
+                        print("Sending: First, send your name: name <your_name>")
                         self.send_str(
                             connection, "First, send your name: name <your_name>"
                         )
@@ -115,13 +123,17 @@ class Server(NetworkNode):
                                 self.block_chain.pop()  # Pop last invalid block
                                 status = "Corrupted block's hash"
 
+                        print("Sending:", status)
                         self.send_str(connection, status)
                 else:
                     raise RuntimeError("Unknown error")
 
                 print("Blockchain:")
-                for i, block in enumerate(self.block_chain):
-                    print(f"\t{i}: {block}")
+                if len(self.block_chain) > 0:
+                    for i, block in enumerate(self.block_chain):
+                        print(f"\t{i}: {block}")
+                else:
+                    print("\tempty")
 
         print("Closing connection with client " + client_name)
         self.send_str(connection, "Server shutting down connection.")
