@@ -105,31 +105,13 @@
           <div class="log-link-container"><a class="button-link" href="logs/sequencial/execucao_cliente_seq.log" target="_blank">Abrir Log Completo</a></div>
         </div>
       </div>
-    </section>
 
-    <section>
-      <h2>✅ Testes Realizados e Evidências</h2>
-      <p>
-        Os testes realizados foram divididos em duas categorias principais: <strong>testes sequenciais</strong> e <strong>testes paralelos</strong>.
-        Para a execução dos teste, o servidor foi executado e seu stdout redirecionado para arquivos de log, enquanto os clientes foram executados em terminais separados, também com seus stdout redirecionados para arquivos de log.
-        Os clientes executaram diferentes inputs (seus nomes refletem quais inputs foram esses):
-        <li>
-          client_correct: Input sem nenhum erro, com transações válidas. Input: <code class="tag">inputs/correct.txt</code>
-        </li>
-        <li>
-          client_incorrect e client_incorrect2: Saques inválidos. Inputs: <code class="tag">inputs/incorrect_withdraw.txt</code> e <code class="tag">inputs/incorrect_withdraw2.txt</code>
-        </li>
-        <li>
-          client_unknown: Inputs com operações desconhecidas. Input: <code class="tag">inputs/unknown.txt</code>
-        </li>
-      </p>
-      
       <div class="row">
-        <div class="card">
-          <h3>Log de Testes Paralelos de Servidor</h3>
-          <pre id="log-tests">Carregando log de testes...</pre>
-          <div class="log-link-container"><a class="button-link" href="logs/paralelo/execucao_servidor_par.log" target="_blank">Abrir Log de Testes</a></div>
-        </div>
+          <div class="card">
+            <h3>Log Servidor (Clientes enviando operações paralelamente)</h3>
+            <pre id="log-server-par">Carregando log do servidor...</pre>
+            <div class="log-link-container"><a class="button-link" href="logs/paralelo/execucao_servidor_par.log" target="_blank">Abrir Log Completo</a></div>
+          </div>
       </div>
     </section>
 
