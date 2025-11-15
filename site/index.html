@@ -12,7 +12,7 @@
     <div class="small">Ricardo Prado Faria &amp; André Grassi — Disciplina: <strong>Redes de Computadores 2</strong></div>
   </header>
 
-  <main>
+  <>
     <section>
       <h2>📄 Resumo e Objetivo</h2>
       <p>Este trabalho tem por objetivo <strong>simular</strong> o fluxo da interação entre cliente e servidor de um serviço de <strong>moedas virtuais baseadas em blockchain</strong>. Vale destacar que o trabalho possibilita o atendimento a <strong>mais de um cliente</strong>.</p>
@@ -34,7 +34,7 @@
         <p>A segunda semana focou na implementação paralela dos módulos. Enquanto a camada de rede e o entrypoint do servidor (<code class="tag">run_server.py</code>) eram estabelecidos, a codificação do <strong>modelo de bloco</strong> (<code class="tag">block.py</code>) e da <strong>lógica de tratamento de transações</strong> (<code class="tag">transaction_handler.py</code>) ocorria em paralelo. Reuniões intermediárias garantiram que os módulos de comunicação e de lógica da blockchain pudessem ser integrados sem conflitos, focando na correta serialização e desserialização dos dados.</p>
 
         <p><strong>Fase 3: Testes, Validação e Documentação (Aprox. 07/11 a 13/11)</strong></p>
-        <p>A fase final foi crucial para a <strong>validação exaustiva</strong> do sistema. Desenvolvemos scripts de testes focados em simular múltiplas transações válidas e inválidas, além de forçar o processo de mineração. Isso gerou os <strong>logs de execução</strong> presentes neste relatório. Por fim, o esforço se concentrou na criação deste <strong>Relatório Interativo em formato de website</strong>, utilizando HTML/CSS, para organizar e apresentar o código, diagramas e as evidências de funcionamento (logs) de forma clara e acessível, cumprindo integralmente os requisitos de documentação do professor.</p>
+        <p>A fase final foi crucial para a <strong>validação exaustiva</strong> do sistema. Desenvolvemos scripts de testes focados em simular múltiplas transações válidas e inválidas. Isso gerou os <strong>logs de execução</strong> presentes neste relatório. Por fim, o esforço se concentrou na criação deste <strong>Relatório Interativo em formato de website</strong>, utilizando HTML/CSS, para organizar e apresentar o código, diagramas e as evidências de funcionamento (logs) de forma clara e acessível, cumprindo integralmente os requisitos de documentação do professor.</p>
       </p>
     </section>
 
@@ -115,7 +115,14 @@
       </div>
     </section>
 
-  </main>
+    <section>
+      <h2>Execução</h2>
+      <p>Para executar o sistema de Mini Blockchain, siga os passos abaixo:</p> 
+      <pre><code>python3 -m venv .venv;
+                source .venv/bin/activate;
+                pip install -e .;
+  </code></pre>
+    </section>
 
   <footer>
     <p>
