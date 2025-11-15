@@ -57,13 +57,13 @@
         </div>
         <div class="card">
           <h3>Diagrama de Atividade (Servidor)</h3>
-          <a href="imgs/client/Activity Diagram.png" target="_blank">
+          <a href="imgs/server/Activity Diagram.png" target="_blank">
             <img src="imgs/server/Activity Diagram.png" alt="Diagrama de atividade do servidor" class="diagram">
           </a>
         </div>
         <div class="card">
           <h3>Validação de Retirada</h3>
-          <a href="imgs/client/Activity Diagram.png" target="_blank">
+          <a href="imgs/server/ValidateWithdrawal.png" target="_blank">
               <img src="imgs/server/ValidateWithdrawal.png" alt="Diagrama de validação de retirada no servidor" class="diagram">
           </a>
         </div>
@@ -75,16 +75,16 @@
       <p class="meta">Os arquivos de código fonte, entregues no formato <code class="tag">.txt</code> para visualização, estão listados abaixo:</p>
       <ul class="file-list">
         <li><a class="link" href="codigo/run_server.py.txt" target="_blank">run_server.py.txt</a> — <strong>Entrypoint</strong> principal do servidor</li>
-        <li><a class="link" href="codigo/run_client.py.txt" target="_blank">run_client.py.txt</a> — Script para <strong>envio de transações</strong> (cliente)</li>
+        <li><a class="link" href="codigo/run_client.py.txt" target="_blank">run_client.py.txt</a> — Script de inicialização do cliente</li>
         <li><a class="link" href="codigo/block.py.txt" target="_blank">block.py.txt</a> — <strong>Modelo de Bloco</strong> (estrutura de dados)</li>
-        <li><a class="link" href="codigo/acc_creation_block.py.txt" target="_blank">acc_creation_block.py.txt</a> — Código para <strong>criação do bloco</strong></li>
-        <li><a class="link" href="codigo/client.py.txt" target="_blank">client.py.txt</a> — <strong>Rede do cliente</strong></li>
-        <li><a class="link" href="codigo/hash.py.txt" target="_blank">hash.py.txt</a> — Funções de <strong>computação e validação de hash</strong></li>
-        <li><a class="link" href="codigo/network_node.py.txt" target="_blank">network_node.py.txt</a> — Funções de <strong>estabelecimento e manutenção</strong> de rede</li>
-        <li><a class="link" href="codigo/operation.py.txt" target="_blank">operation.py.txt</a> — Funções de <strong>estabelecimento e manutenção</strong> de rede</li>
-        <li><a class="link" href="codigo/server.py.txt" target="_blank">server.py.txt</a> — Funções de <strong>estabelecimento e manutenção</strong> de rede</li>
-        <li><a class="link" href="codigo/transaction_handler.py.txt" target="_blank">transaction_handler.py.txt</a> — Funções de <strong>estabelecimento e manutenção</strong> de rede</li>
-        <li><a class="link" href="codigo/auto_execution.py.txt" target="_blank">auto_execution.py.txt</a> — Funções de <strong>estabelecimento e manutenção</strong> de rede</li>
+        <li><a class="link" href="codigo/acc_creation_block.py.txt" target="_blank">acc_creation_block.py.txt</a> — Lógica de criação de contas e do <strong>bloco gênese</strong></li>
+        <li><a class="link" href="codigo/client.py.txt" target="_blank">client.py.txt</a> — Implementação da <strong>rede e requisições</strong> do cliente</li>
+        <li><a class="link" href="codigo/hash.py.txt" target="_blank">hash.py.txt</a> — Funções de <strong>cálculo e validação de hash</strong> (SHA-256)</li>
+        <li><a class="link" href="codigo/network_node.py.txt" target="_blank">network_node.py.txt</a> — Funções base para <strong>comunicação entre nós</strong> (TCP)</li>
+        <li><a class="link" href="codigo/operation.py.txt" target="_blank">operation.py.txt</a> — <strong>Modelos de dados</strong> para diferentes operações</li>
+        <li><a class="link" href="codigo/server.py.txt" target="_blank">server.py.txt</a> — Lógica de <strong>recebimento e processamento</strong> de requisições</li>
+        <li><a class="link" href="codigo/transaction_handler.py.txt" target="_blank">transaction_handler.py.txt</a> — <strong>Lógica principal da blockchain</strong> (mempool, mineração, validação)</li>
+        <li><a class="link" href="codigo/auto_execution.py.txt" target="_blank">auto_execution.py.txt</a> — Script para <strong>testes automatizados</strong> e exaustivos</li>
       </ul>
     </section>
 
@@ -94,15 +94,15 @@
 
       <div class="row">
         <div class="card">
-          <h3>Log Servidor (Preview)</h3>
+          <h3>Log Servidor Sequencial (Preview)</h3>
           <pre id="log-server">Carregando log do servidor...</pre>
-          <div class="log-link-container"><a class="button-link" href="logs/execucao_servidor.log" target="_blank">Abrir Log Completo</a></div>
+          <div class="log-link-container"><a class="button-link" href="logs/sequencial/execucao_servidor_seq.log" target="_blank">Abrir Log Completo</a></div>
         </div>
 
         <div class="card">
-          <h3>Log Cliente (Preview)</h3>
+          <h3>Log Cliente Sequencial (Preview)</h3>
           <pre id="log-client">Carregando log do cliente...</pre>
-          <div class="log-link-container"><a class="button-link" href="logs/execucao_cliente.log" target="_blank">Abrir Log Completo</a></div>
+          <div class="log-link-container"><a class="button-link" href="logs/sequencial/execucao_cliente_seq.log" target="_blank">Abrir Log Completo</a></div>
         </div>
       </div>
     </section>
@@ -119,9 +119,9 @@
       
       <div class="row">
         <div class="card">
-          <h3>Log de Testes Gerais (Preview)</h3>
+          <h3>Log de Testes Paralelos de Servidor (Preview)</h3>
           <pre id="log-tests">Carregando log de testes...</pre>
-          <div class="log-link-container"><a class="button-link" href="logs/testes.log" target="_blank">Abrir Log de Testes</a></div>
+          <div class="log-link-container"><a class="button-link" href="logs/paralelo/execucao_servidor_par.log" target="_blank">Abrir Log de Testes</a></div>
         </div>
         <div class="card">
           <h3>Screenshots de Evidências</h3>
@@ -148,12 +148,14 @@
       }).then(t => {
         document.getElementById(elementId).textContent = t.slice(0, 4000); // preview limt 4000 chars
       }).catch(e => {
-        document.getElementById(elementId).textContent = `(arquivo não encontrado: ${path})`;
+        // Exibe o erro de não encontrado e o caminho que falhou.
+        document.getElementById(elementId).textContent = `(Arquivo não encontrado no caminho: ${path})`; 
       });
     }
-    loadText('logs/execucao_servidor.log','log-server');
-    loadText('logs/execucao_cliente.log','log-client');
-    loadText('logs/testes.log','log-tests');
+
+    loadText('logs/sequencial/execucao_servidor_seq.log', 'log-server');
+    loadText('logs/sequencial/execucao_cliente_seq.log', 'log-client');
+    loadText('logs/paralelo/execucao_servidor_par.log', 'log-tests');
   </script>
 </body>
 </html>
