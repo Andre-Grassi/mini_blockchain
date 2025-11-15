@@ -109,13 +109,20 @@
 
     <section>
       <h2>✅ Testes Realizados e Evidências</h2>
-      <p>Os principais cenários de teste validados no projeto incluem:</p>
-      <ol>
-        <li><strong>Envio de Transação Válida:</strong> Verificação da aceitação pela <code class="tag">mempool</code> (vide logs).</li>
-        <li><strong>Validação de Saque:</strong> Teste do fluxo completo de operação de retirada (detalhes no diagrama <code class="tag">server/ValidateWithdrawal</code>).</li>
-        <li><strong>Mineração / Criação de Bloco:</strong> Acompanhamento da criação de um bloco simples (mostrada no log de servidor).</li>
-        <li><strong>Casos Inválidos:</strong> Teste de entradas faltantes, que resultam no erro <strong>HTTP 400</strong> (descrição no relatório anexo).</li>
-      </ol>
+      <p>
+        Os testes realizados foram divididos em duas categorias principais: <strong>testes sequenciais</strong> e <strong>testes paralelos</strong>.
+        Para a execução dos teste, o servidor foi executado e seu stdout redirecionado para arquivos de log, enquanto os clientes foram executados em terminais separados, também com seus stdout redirecionados para arquivos de log.
+        Os clientes executaram diferentes inputs (seus nomes refletem quais inputs foram esses):
+        <li>
+          client_correct: Input sem nenhum erro, com transações válidas. Input: <code class="tag">inputs/correct.txt</code>
+        </li>
+        <li>
+          client_incorrect e client_incorrect2: Saques inválidos. Inputs: <code class="tag">inputs/incorrect_withdraw.txt</code> e <code class="tag">inputs/incorrect_withdraw2.txt</code>
+        </li>
+        <li>
+          client_unknown: Inputs com operações desconhecidas. Input: <code class="tag">inputs/unknown.txt</code>
+        </li>
+      </p>
       
       <div class="row">
         <div class="card">
@@ -123,14 +130,7 @@
           <pre id="log-tests">Carregando log de testes...</pre>
           <div class="log-link-container"><a class="button-link" href="logs/paralelo/execucao_servidor_par.log" target="_blank">Abrir Log de Testes</a></div>
         </div>
-        <div class="card">
-          <h3>Screenshots de Evidências</h3>
-          <a href="imgs/server/Activity Diagram.png" target="_blank">
-            <img src="imgs/server/Activity Diagram.png" alt="Screenshots dos testes" class="diagram">
-          </a>
-        </div>
       </div>
-      <p class="small">Screenshots e resultados completos dos testes estão disponíveis nas pastas <code class="tag">site/imgs/</code> e <code class="tag">site/logs/</code>.</p>
     </section>
 
   </main>
