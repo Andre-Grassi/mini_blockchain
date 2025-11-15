@@ -1,6 +1,13 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-#
+"""Transaction handler for blockchain operations.
+
+Validates and executes deposit/withdrawal transactions, creates appropriate
+blocks (standard Block or AccCreationBlock for first deposits), and manages
+client balances. Does not validate hashes - that responsibility belongs to
+the Hash class. All methods are static as the class serves as a utility.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from __future__ import annotations
 

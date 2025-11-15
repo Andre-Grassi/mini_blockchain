@@ -1,6 +1,13 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-#
+"""Hash utilities for blockchain integrity.
+
+Computes and validates SHA-256 hashes for blocks in the blockchain. Each block's
+hash includes the previous block's hash (except genesis).
+Provides methods to validate individual blocks and the entire blockchain.
+Does not automatically correct invalid hashes - only reports them.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from __future__ import annotations
 

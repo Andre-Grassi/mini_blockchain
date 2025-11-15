@@ -1,7 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-#
+"""Base class for network nodes in the blockchain system.
 
+Provides common TCP socket functionality for both server and client nodes,
+including message sending/receiving with newline delimiters, message parsing,
+and network utilities. Serves as the foundation for Server and Client classes.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 import socket
 from typing import Optional
@@ -23,12 +28,14 @@ class NetworkNode:
 
     def __init__(self, buffer_size: Optional[int] = BUFFER_SIZE):
         self.socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-        self.buffer_size = buffer_size  # OPTIMIZE useless?
+        self.buffer_size = buffer_size
 
     def send_str(self, connection: socket.socket, message: str):
+        message += "\n"  # Used as delimiter
         connection.sendall(message.encode("utf-8"))
 
     def send_bytes(self, connection: socket.socket, message: bytes):
+        message += b"\n"  # Used as delimiter
         connection.sendall(message)
 
     def close(self):
@@ -72,8 +79,12 @@ class NetworkNode:
         action = parts[0].lower()
 
         # Check if the action is recognizable
-        # UGLY hardcoded actions strings
-        if action not in ("deposit", "withdraw", "name", "q"):
+        if action not in (
+            Operation.DEPOSIT.value,
+            Operation.WITHDRAW.value,
+            Operation.NAME.value,
+            Operation.QUIT.value,
+        ):
             return (None, None)
 
         if action == Operation.QUIT.value:
@@ -98,3 +109,30 @@ class NetworkNode:
             return (Operation.WITHDRAW, amount)
 
         raise RuntimeError("Unknown error while parsing message")
+
+    def _get_own_ip(self) -> str:
+        """Gets the local IP address of the node.
+
+        Connects to an external IP with UDP to determine the local IP.
+
+        Returns:
+            str: The local IP address. If it fails, returns None.
+        """
+        aux_socket = None
+        try:
+            # Create a UDP socket
+            aux_socket = socket.socket(socket.AF_INET, socket.SOCK_DGRAM)
+
+            # Connect to an extern IP
+            # 8.8.8.8 IP is a public DNS from Google
+            aux_socket.connect(("8.8.8.8", 1))
+
+            # Get local IP associated with this socket
+            own_ip = aux_socket.getsockname()[0]
+        except Exception as e:
+            print(f"Couldn't get local IP: {e}")
+        finally:
+            if aux_socket:
+                aux_socket.close()
+
+        return own_ip

@@ -1,6 +1,12 @@
-#
-# Authors: Andre Grassi de Jesus, Ricardo Faria
-#
+"""Client class for the blockchain network.
+
+Extends NetworkNode to provide client-specific functionality for connecting
+to the blockchain server. Clients can perform operations like name registration,
+deposits, and withdrawals by communicating with the server over TCP.
+
+Authors: Andre Grassi de Jesus, Ricardo Faria
+Last Modified: Nov. 14 2025
+"""
 
 from models.network_node import NetworkNode
 
@@ -10,12 +16,14 @@ class Client(NetworkNode):
 
     Attributes:
         name (str): Identification of the client.
+        ip (str): IP address of the client.
     """
 
     def __init__(self, name: str):
         super().__init__()
 
         self.name = name
+        self.ip = self._get_own_ip()
 
     def connect_to(self, server_ip: str, server_port: int):
         """Connects the client to the server.
