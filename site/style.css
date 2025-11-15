@@ -6,14 +6,13 @@
   --color-primary-dark: #005691;
   --color-header-bg: #1f2937; /* Cinza escuro */
   --color-text-dark: #111827; /* Texto principal escuro */
-  --color-text-light: #f9fafb;
+  --color-text-light: #f9fafb; /* Branco muito claro */
   --color-background: #f8f9fa; /* Fundo leve */
   --color-card-bg: #ffffff;
   --color-code-bg: #111827; /* Fundo preto para código */
   --color-code-text: #e5e7eb;
   --color-subtle-text: #6b7280;
 }
-
 /* ---------------------------------- */
 /* ESTILOS GLOBAIS E REINICIALIZAÇÃO */
 /* ---------------------------------- */
@@ -32,10 +31,11 @@ header, footer {
   text-align: center;
   padding: 1.5rem 1rem;
   background: var(--color-header-bg);
-  color: var(--color-text-light);
+  color: var(--color-text-light); 
 }
 
 header h1 {
+  color: var(--color-text-light); 
   margin-bottom: 0.25rem;
   font-size: 2.2rem;
 }
@@ -101,11 +101,8 @@ h2 {
 
 img.diagram {
   width: 100%;
-  /* 🖼️ ALTERAÇÃO: Define uma altura fixa para todas as imagens */
-  height: 200px; /* Você pode ajustar este valor (ex: 250px) */
-  /* 🖼️ ALTERAÇÃO: Garante que a imagem se ajuste dentro da altura sem cortar */
+  height: 200px; 
   object-fit: contain; 
-  /* Adiciona um fundo branco no caso de object-fit: contain e a imagem ser transparente/menor */
   background-color: #f9fafb; 
   
   border-radius: 6px;
@@ -193,7 +190,6 @@ a.link:hover {
     text-overflow: ellipsis;
 }
 
-/* Estilo para links que parecem botões, como em "Abrir arquivo completo" */
 .button-link {
     display: inline-block;
     background-color: var(--color-primary);
@@ -212,14 +208,12 @@ a.link:hover {
     text-decoration: none !important;
 }
 
-/* Ajuste para o .small que contém o link do log */
 .log-link-container {
     margin-top: 0.5rem;
     padding-top: 0.5rem;
     border-top: 1px dashed #e5e7eb;
 }
 
-/* Responsividade básica para telas menores */
 @media (max-width: 768px) {
     .row {
         gap: 1.5rem;
@@ -230,7 +224,6 @@ a.link:hover {
     section {
         padding: 1.5rem;
     }
-    /* Adapta a altura da imagem para telas menores, se necessário */
     img.diagram {
         height: 150px; 
     }
