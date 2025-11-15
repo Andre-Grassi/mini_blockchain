@@ -40,7 +40,7 @@
 
     <section>
       <h2>📐 Arquitetura e Diagramas</h2>
-      <p class="meta">Os diagramas de projeto foram gerados utilizando ferramentas UML e estão localizados em <code class="tag">docs/uml/</code>.</p>
+      <p class="meta">Os diagramas de projeto foram gerados utilizando ferramentas UML e estão localizados em <code class="tag">docs/uml/</code>. Entretanto, serviram apenas como base inicial, visto que o código real sofreu alterações significativas durante o desenvolvimento.</p>
 
       <div class="row">
         <div class="card">
@@ -74,17 +74,17 @@
       <h2>💻 Implementação — Código Fonte</h2>
       <p class="meta">Os arquivos de código fonte, entregues no formato <code class="tag">.txt</code> para visualização, estão listados abaixo:</p>
       <ul class="file-list">
-        <li><a class="link" href="codigo/run_server.py.txt" target="_blank">run_server.py.txt</a> — <strong>Entrypoint</strong> principal do servidor</li>
-        <li><a class="link" href="codigo/run_client.py.txt" target="_blank">run_client.py.txt</a> — Script de inicialização do cliente</li>
-        <li><a class="link" href="codigo/block.py.txt" target="_blank">block.py.txt</a> — <strong>Modelo de Bloco</strong> (estrutura de dados)</li>
+        <li><a class="link" href="codigo/run_server.py.txt" target="_blank">run_server.py.txt</a> — Ponto de entrada do servidor blockchain (TCP, multi-threaded)</li>
+        <li><a class="link" href="codigo/run_client.py.txt" target="_blank">run_client.py.txt</a> — Ponto de entrada do cliente (modos interativo e automatizado)</li>
+        <li><a class="link" href="codigo/block.py.txt" target="_blank">block.py.txt</a> — <strong>Modelo de Bloco</strong> que armazena transações e hash criptográfico</li>
         <li><a class="link" href="codigo/acc_creation_block.py.txt" target="_blank">acc_creation_block.py.txt</a> — Lógica de criação de contas e do <strong>bloco gênese</strong></li>
-        <li><a class="link" href="codigo/client.py.txt" target="_blank">client.py.txt</a> — Implementação da <strong>rede e requisições</strong> do cliente</li>
+        <li><a class="link" href="codigo/client.py.txt" target="_blank">client.py.txt</a> — Classe Client para conexão TCP e operações com o servidor</li>
         <li><a class="link" href="codigo/hash.py.txt" target="_blank">hash.py.txt</a> — Funções de <strong>cálculo e validação de hash</strong> (SHA-256)</li>
-        <li><a class="link" href="codigo/network_node.py.txt" target="_blank">network_node.py.txt</a> — Funções base para <strong>comunicação entre nós</strong> (TCP)</li>
-        <li><a class="link" href="codigo/operation.py.txt" target="_blank">operation.py.txt</a> — <strong>Modelos de dados</strong> para diferentes operações</li>
-        <li><a class="link" href="codigo/server.py.txt" target="_blank">server.py.txt</a> — Lógica de <strong>recebimento e processamento</strong> de requisições</li>
-        <li><a class="link" href="codigo/transaction_handler.py.txt" target="_blank">transaction_handler.py.txt</a> — <strong>Lógica principal da blockchain</strong> (mempool, mineração, validação)</li>
-        <li><a class="link" href="codigo/auto_execution.py.txt" target="_blank">auto_execution.py.txt</a> — Script para <strong>testes automatizados</strong> e exaustivos</li>
+        <li><a class="link" href="codigo/network_node.py.txt" target="_blank">network_node.py.txt</a> — Classe base para nós da rede (servidor e cliente)</li>
+        <li><a class="link" href="codigo/operation.py.txt" target="_blank">operation.py.txt</a> — Enumeração de operações (DEPOSIT, WITHDRAW, NAME, QUIT)</li>
+        <li><a class="link" href="codigo/server.py.txt" target="_blank">server.py.txt</a> — Gerencia blockchain, conexões de clientes e validação de transações</li>
+        <li><a class="link" href="codigo/transaction_handler.py.txt" target="_blank">transaction_handler.py.txt</a> — Valida e executa transações (depósitos e saques)</li>
+        <li><a class="link" href="codigo/auto_execution.py.txt" target="_blank">auto_execution.py.txt</a> — Script para <strong>teste automatizado</strong> e exaustivo</li>
       </ul>
     </section>
 
